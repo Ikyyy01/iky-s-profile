@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Iky</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        *,*::before,*::after{box-sizing:border-box}
+        body{background:#07090f;color:#c8d6e5;font-family:'DM Sans',sans-serif;cursor:none;overflow-x:hidden;}
+        .font-display{font-family:'Syne',sans-serif;}
+        body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.04;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px 200px;}
+        #page-loader{position:fixed;inset:0;z-index:10000;background:#07090f;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;transition:opacity .6s ease,visibility .6s ease;}
+        #page-loader.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+        .loader-logo{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:#fff;}.loader-logo span{color:#6ee7b7;}
+        .loader-bar-track{width:160px;height:2px;background:#1e2636;border-radius:2px;overflow:hidden;}
+        .loader-bar-fill{height:100%;width:0%;background:#6ee7b7;border-radius:2px;animation:loader-fill 1.6s cubic-bezier(.4,0,.2,1) forwards;}
+        @keyframes loader-fill{0%{width:0%}60%{width:75%}100%{width:100%}}
+        .cursor-dot,.cursor-ring{position:fixed;top:0;left:0;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+        .cursor-dot{width:6px;height:6px;background:#6ee7b7;transition:transform .15s,background .15s;}
+        .cursor-ring{width:36px;height:36px;border:1.5px solid rgba(110,231,183,.5);transition:width .3s,height .3s,border-color .3s;}
+        body.cursor-hover .cursor-dot{transform:translate(-50%,-50%) scale(0);}
+        body.cursor-hover .cursor-ring{width:52px;height:52px;border-color:#6ee7b7;background:rgba(110,231,183,.06);}
+        body.cursor-clicking .cursor-dot{transform:translate(-50%,-50%) scale(2.5);background:#34d399;}
+        @media(hover:none){.cursor-dot,.cursor-ring{display:none;}body{cursor:auto;}}
+        .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1);}
+        .reveal.visible{opacity:1;transform:translateY(0);}
+        .reveal-left{opacity:0;transform:translateX(-24px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1);}
+        .reveal-left.visible{opacity:1;transform:translateX(0);}
+        .reveal-right{opacity:0;transform:translateX(24px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1);}
+        .reveal-right.visible{opacity:1;transform:translateX(0);}
+        .status-dot{width:8px;height:8px;border-radius:50%;background:#6ee7b7;flex-shrink:0;animation:pulse-dot 2s ease-in-out infinite;}
+        @keyframes pulse-dot{0%{box-shadow:0 0 0 0 rgba(110,231,183,.6)}70%{box-shadow:0 0 0 8px rgba(110,231,183,0)}100%{box-shadow:0 0 0 0 rgba(110,231,183,0)}}
+        .link-underline{position:relative;text-decoration:none;color:#94a3b8;transition:color .15s;}
+        .link-underline::after{content:'';position:absolute;bottom:-2px;left:0;width:0%;height:1px;background:#6ee7b7;transition:width .3s;}
+        .link-underline:hover{color:#6ee7b7;}.link-underline:hover::after{width:100%;}
+        .form-input{width:100%;background:#07090f;border:1px solid #1e2636;border-radius:12px;padding:14px 18px;color:#e2e8f0;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s,box-shadow .2s;}
+        .form-input::placeholder{color:#2a3448;}
+        .form-input:focus{border-color:rgba(110,231,183,.4);box-shadow:0 0 0 3px rgba(110,231,183,.07);}
+        textarea.form-input{resize:none;min-height:130px;}
+        #char-count{font-size:.7rem;color:#2a3448;text-align:right;margin-top:4px;}
+        #char-count.warn{color:#f472b6;}
+        .btn-submit{width:100%;padding:15px;border-radius:12px;border:none;font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;color:#07090f;background:#6ee7b7;cursor:none;position:relative;overflow:hidden;transition:background .2s,transform .2s,box-shadow .2s;}
+        .btn-submit:hover{background:#34d399;transform:translateY(-2px);box-shadow:0 10px 28px rgba(110,231,183,.2);}
+        .btn-submit:disabled{opacity:.5;pointer-events:none;}
+        .btn-submit::before{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);transform:skewX(-20deg);transition:left .5s ease;}
+        .btn-submit:hover::before{left:150%;}
+        .contact-item{display:flex;align-items:flex-start;gap:16px;padding:16px;border-radius:14px;border:1px solid #1e2636;transition:border-color .25s,background .25s;}
+        .contact-item:hover{border-color:rgba(110,231,183,.2);background:rgba(110,231,183,.03);}
+        .contact-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;background:rgba(110,231,183,.07);border:1px solid rgba(110,231,183,.12);}
+        .social-btn{width:42px;height:42px;border-radius:50%;border:1px solid #2a3448;display:flex;align-items:center;justify-content:center;color:#475569;text-decoration:none;transition:all .2s;}
+        .social-btn:hover{border-color:rgba(110,231,183,.35);color:#6ee7b7;background:rgba(110,231,183,.07);transform:translateY(-2px);}
+        .topic-chip{font-size:.72rem;font-weight:600;padding:6px 14px;border-radius:999px;border:1px solid #2a3448;color:#475569;background:transparent;cursor:none;transition:all .2s;}
+        .topic-chip:hover{border-color:rgba(110,231,183,.3);color:#6ee7b7;}
+        .topic-chip.selected{background:rgba(110,231,183,.1);color:#6ee7b7;border-color:rgba(110,231,183,.35);}
+        #toast{position:fixed;bottom:2rem;right:2rem;z-index:9999;padding:14px 20px;border-radius:14px;border:1px solid rgba(110,231,183,.25);background:#161b27;color:#e2e8f0;font-size:.85rem;font-weight:500;display:flex;align-items:center;gap:10px;transform:translateY(80px);opacity:0;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .4s;pointer-events:none;}
+        #toast.show{transform:translateY(0);opacity:1;}
+        .section-label{font-size:.7rem;font-weight:600;letter-spacing:.25em;text-transform:uppercase;color:#6ee7b7;}
+        .field-label{display:block;font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#2a3448;margin-bottom:8px;}
+        [data-tooltip]{position:relative;}
+        [data-tooltip]::after{content:attr(data-tooltip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(4px);background:#1e2636;color:#e2e8f0;font-size:.7rem;padding:4px 10px;border-radius:6px;white-space:nowrap;pointer-events:none;opacity:0;border:1px solid #2a3448;transition:opacity .15s,transform .15s;z-index:100;}
+        [data-tooltip]:hover::after{opacity:1;transform:translateX(-50%) translateY(0);}
+        ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:#07090f;}::-webkit-scrollbar-thumb{background:#2a3448;border-radius:4px;}::-webkit-scrollbar-thumb:hover{background:#6ee7b7;}
+        ::selection{background:rgba(110,231,183,.2);color:#fff;}
+        #mobile-menu{display:none;}
+    </style>
+</head>
+<body class="min-h-screen antialiased">
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+    <div id="page-loader"><div class="loader-logo">iky<span>.</span></div><div class="loader-bar-track"><div class="loader-bar-fill"></div></div></div>
+    <div id="toast" role="status" aria-live="polite"><span id="toast-icon" style="color:#6ee7b7;">✓</span><span id="toast-msg">Message sent!</span></div>
+
+    <!-- NAV -->
+    <nav class="fixed w-full z-50 top-0" id="navbar-contact">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
+            <a href="index.html" class="font-display text-xl font-bold text-white">iky<span style="color:#6ee7b7">.</span></a>
+            <ul class="hidden md:flex space-x-8 text-sm font-medium items-center" style="color:#94a3b8;">
+                <li><a href="index.html" class="link-underline">Home</a></li>
+                <li><a href="about.html" class="link-underline">About</a></li>
+                <li><a href="portfolio.html" class="link-underline">Portfolio</a></li>
+                <li><a href="contact.html" style="color:#6ee7b7;border-bottom:2px solid #6ee7b7;padding-bottom:2px;">Contact</a></li>
+            </ul>
+            <a href="contact.html" class="hidden md:inline-flex items-center gap-2 text-sm font-semibold px-5 py-2.5 rounded-full" style="background:#6ee7b7;color:#07090f;position:relative;z-index:100;">
+                Let's Talk <svg width="12" height="12" fill="none" viewBox="0 0 12 12"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="#07090f" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </a>
+            <button id="mobile-menu-btn" class="md:hidden" style="color:#94a3b8;background:none;border:none;cursor:none;">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+        </div>
+        <div id="mobile-menu" style="background:#161b27;border-top:1px solid #1e2636;">
+            <ul class="flex flex-col px-8 py-6 space-y-5 text-sm font-medium">
+                <li><a href="index.html" style="color:#94a3b8;">Home</a></li>
+                <li><a href="about.html" style="color:#94a3b8;">About</a></li>
+                <li><a href="portfolio.html" style="color:#94a3b8;">Portfolio</a></li>
+                <li><a href="contact.html" style="color:#6ee7b7;">Contact</a></li>
+                <li style="padding-top:1rem;border-top:1px solid #2a3448;"><a href="contact.html" class="block text-center font-bold py-3 rounded-full" style="background:#6ee7b7;color:#07090f;">Let's Talk</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="relative pt-40 pb-16 overflow-hidden">
+        <div style="position:absolute;top:-80px;right:-80px;width:480px;height:480px;background:radial-gradient(circle,rgba(110,231,183,.05) 0%,transparent 70%);border-radius:50%;pointer-events:none;"></div>
+        <div style="position:absolute;bottom:-60px;left:-60px;width:360px;height:360px;background:radial-gradient(circle,rgba(99,102,241,.05) 0%,transparent 70%);border-radius:50%;pointer-events:none;"></div>
+        <div class="max-w-3xl mx-auto px-6 text-center reveal">
+            <div class="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full text-xs font-semibold tracking-wider uppercase" style="background:rgba(110,231,183,.05);border:1px solid rgba(110,231,183,.2);color:#6ee7b7;">
+                <span class="status-dot"></span> Open to Opportunities
+            </div>
+            <h1 class="font-display font-bold text-white mb-5" style="font-size:clamp(2.4rem,5.5vw,4.5rem);line-height:1.05;">
+                Let's Build Something<br/>
+                <span style="background:linear-gradient(135deg,#6ee7b7,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Together.</span>
+            </h1>
+            <p class="leading-relaxed max-w-xl mx-auto" style="color:#94a3b8;">Have a project idea, a question, or just want to say hi? I'm always open to new conversations and opportunities.</p>
+        </div>
+    </section>
+
+    <!-- MAIN -->
+    <section class="pb-24">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
+
+                <!-- Left -->
+                <div class="lg:col-span-2 flex flex-col gap-5 reveal-left">
+                    <div class="rounded-2xl p-6 border" style="background:#161b27;border-color:#1e2636;">
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-4" style="background:rgba(110,231,183,.06);border:1px solid rgba(110,231,183,.2);color:#6ee7b7;">
+                            <span class="status-dot" style="width:6px;height:6px;"></span> Currently Available
+                        </div>
+                        <p class="text-sm leading-relaxed" style="color:#94a3b8;">Open for <span class="text-white font-medium">internships</span>, <span class="text-white font-medium">freelance projects</span>, and <span class="text-white font-medium">collaborative work</span> in UI/UX, mobile development, and data science.</p>
+                        <div class="mt-4 pt-4 border-t flex items-center gap-2 text-xs" style="border-color:#1e2636;color:#475569;"><span>⏱</span> Usually responds within 24 hours</div>
+                    </div>
+
+                    <div class="rounded-2xl p-6 border flex flex-col gap-3" style="background:#161b27;border-color:#1e2636;">
+                        <p class="section-label mb-1">Reach Me At</p>
+                        <div class="contact-item">
+                            <div class="contact-icon">✉️</div>
+                            <div><p class="field-label">Email</p><a href="mailto:riskyjanuarlbs01@gmail.com" class="text-sm font-medium link-underline break-all" style="color:#6ee7b7;">riskyjanuarlbs01@gmail.com</a></div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">📞</div>
+                            <div><p class="field-label">Phone</p><p class="text-sm font-medium text-white">(+62) 8xx-xxxx-xxxx</p></div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">📍</div>
+                            <div><p class="field-label">Location</p><p class="text-sm font-medium text-white">Jakarta, Indonesia</p><p class="text-xs mt-0.5" style="color:#475569;">WIB (UTC+7)</p></div>
+                        </div>
+                    </div>
+
+                    <div class="rounded-2xl p-6 border" style="background:#161b27;border-color:#1e2636;">
+                        <p class="section-label mb-4">Find Me Online</p>
+                        <div class="flex gap-3">
+                            <a href="https://www.linkedin.com/in/muhammad-risky-januar-lubis-a3b554350" target="_blank" rel="noopener" class="social-btn" data-tooltip="LinkedIn" aria-label="LinkedIn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                            </a>
+                            <a href="https://github.com/Ikyyy01" target="_blank" rel="noopener" class="social-btn" data-tooltip="GitHub" aria-label="GitHub">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                            </a>
+                            <a href="https://www.instagram.com/riskyjanuarl" target="_blank" rel="noopener" class="social-btn" data-tooltip="Instagram" aria-label="Instagram">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Form -->
+                <div class="lg:col-span-3 reveal-right">
+                    <div class="rounded-2xl p-8 border" style="background:#161b27;border-color:#1e2636;">
+                        <h2 class="font-display font-bold text-white text-2xl mb-1">Send a Message</h2>
+                        <p class="text-sm mb-8" style="color:#475569;">Fill out the form and I'll get back to you as soon as possible.</p>
+                        <form id="contact-form" novalidate>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+                                <div>
+                                    <label for="name" class="field-label">Full Name</label>
+                                    <input type="text" id="name" name="name" class="form-input" placeholder="Your name" required autocomplete="name"/>
+                                    <p id="err-name" class="text-xs mt-1.5" style="color:#f87171;display:none;">Please enter your name.</p>
+                                </div>
+                                <div>
+                                    <label for="email" class="field-label">Email Address</label>
+                                    <input type="email" id="email" name="email" class="form-input" placeholder="your@email.com" required autocomplete="email"/>
+                                    <p id="err-email" class="text-xs mt-1.5" style="color:#f87171;display:none;">Please enter a valid email.</p>
+                                </div>
+                            </div>
+                            <div class="mb-5">
+                                <label class="field-label">Topic</label>
+                                <div class="flex flex-wrap gap-2">
+                                    <button type="button" class="topic-chip" data-value="UI/UX Project">UI/UX Project</button>
+                                    <button type="button" class="topic-chip" data-value="Mobile Dev">Mobile Dev</button>
+                                    <button type="button" class="topic-chip" data-value="Data Science">Data Science</button>
+                                    <button type="button" class="topic-chip" data-value="Collaboration">Collaboration</button>
+                                    <button type="button" class="topic-chip" data-value="Other">Other</button>
+                                </div>
+                                <input type="hidden" id="topic" name="topic" value=""/>
+                            </div>
+                            <div class="mb-5">
+                                <label for="subject" class="field-label">Subject</label>
+                                <input type="text" id="subject" name="subject" class="form-input" placeholder="Project or inquiry title" required/>
+                                <p id="err-subject" class="text-xs mt-1.5" style="color:#f87171;display:none;">Please enter a subject.</p>
+                            </div>
+                            <div class="mb-6">
+                                <label for="message" class="field-label">Message</label>
+                                <textarea id="message" name="message" class="form-input" placeholder="Tell me about your project or idea..." required maxlength="500"></textarea>
+                                <p id="char-count">0 / 500</p>
+                                <p id="err-message" class="text-xs mt-1.5" style="color:#f87171;display:none;">Please write a message (min 10 chars).</p>
+                            </div>
+                            <button type="submit" id="submit-btn" class="btn-submit"><span id="btn-label">Send Message</span></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-10" style="border-top:1px solid #1e2636;">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <a href="index.html" class="font-display text-lg font-bold text-white">iky<span style="color:#6ee7b7;">.</span></a>
+            <p class="text-xs" style="color:#2a3448;">© 2026 Muhammad Risky Januar Lubis</p>
+            <div class="flex gap-3">
+                <a href="https://www.instagram.com/riskyjanuarl" target="_blank" rel="noopener" class="social-btn" data-tooltip="Instagram" aria-label="Instagram"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg></a>
+                <a href="https://www.linkedin.com/in/muhammad-risky-januar-lubis-a3b554350" target="_blank" rel="noopener" class="social-btn" data-tooltip="LinkedIn" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+                <a href="https://github.com/Ikyyy01" target="_blank" rel="noopener" class="social-btn" data-tooltip="GitHub" aria-label="GitHub"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+        window.addEventListener('load', () => { setTimeout(() => { const l=document.getElementById('page-loader'); if(l) l.classList.add('hidden'); }, 1600); });
+
+        const nav = document.getElementById('navbar-contact');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 30) { nav.style.background='rgba(7,9,15,.95)'; nav.style.backdropFilter='blur(20px)'; nav.style.borderBottom='1px solid #161b27'; }
+            else { nav.style.background='transparent'; nav.style.backdropFilter='none'; nav.style.borderBottom='none'; }
+        });
+
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            const m = document.getElementById('mobile-menu');
+            m.style.display = m.style.display === 'block' ? 'none' : 'block';
+        });
+
+        const revEls = document.querySelectorAll('.reveal,.reveal-left,.reveal-right');
+        const ro = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+        }, { threshold: 0.08 });
+        revEls.forEach(el => { if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible'); else ro.observe(el); });
+
+        // Topic chips
+        document.querySelectorAll('.topic-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                document.querySelectorAll('.topic-chip').forEach(c => c.classList.remove('selected'));
+                chip.classList.add('selected');
+                document.getElementById('topic').value = chip.dataset.value;
+                const subj = document.getElementById('subject');
+                if (!subj.value) subj.value = chip.dataset.value + ' Inquiry';
+            });
+        });
+
+        // Char counter
+        const msgEl = document.getElementById('message'), counter = document.getElementById('char-count');
+        msgEl.addEventListener('input', () => {
+            const len = msgEl.value.length;
+            counter.textContent = len + ' / 500';
+            counter.classList.toggle('warn', len > 450);
+        });
+
+        // Toast
+        function showToast(msg, type='success') {
+            const t = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = msg;
+            document.getElementById('toast-icon').textContent = type === 'success' ? '✓' : '✕';
+            document.getElementById('toast-icon').style.color = type === 'success' ? '#6ee7b7' : '#f87171';
+            t.className = 'show';
+            setTimeout(() => { t.className = ''; }, 3500);
+        }
+
+        // Validation
+        function validateField(id, errId, testFn) {
+            const val = document.getElementById(id).value.trim();
+            const ok = testFn(val);
+            document.getElementById(id).style.borderColor = ok ? '' : 'rgba(248,113,113,.5)';
+            document.getElementById(errId).style.display = ok ? 'none' : 'block';
+            return ok;
+        }
+
+        document.getElementById('contact-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const ok1 = validateField('name',    'err-name',    v => v.length >= 2);
+            const ok2 = validateField('email',   'err-email',   v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+            const ok3 = validateField('subject', 'err-subject', v => v.length >= 3);
+            const ok4 = validateField('message', 'err-message', v => v.length >= 10);
+            if (!ok1 || !ok2 || !ok3 || !ok4) return;
+            const btn = document.getElementById('submit-btn'), label = document.getElementById('btn-label');
+            btn.disabled = true; label.textContent = 'Sending…';
+            await new Promise(r => setTimeout(r, 1800));
+            label.textContent = 'Send Message'; btn.disabled = false;
+            document.getElementById('contact-form').reset();
+            counter.textContent = '0 / 500';
+            document.querySelectorAll('.topic-chip').forEach(c => c.classList.remove('selected'));
+            document.getElementById('topic').value = '';
+            showToast("Message sent! I'll be in touch soon.");
+        });
+
+        ['name','email','subject','message'].forEach(id => {
+            document.getElementById(id).addEventListener('blur', () => {
+                if (id==='name')    validateField('name',    'err-name',    v => v.length >= 2);
+                if (id==='email')   validateField('email',   'err-email',   v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+                if (id==='subject') validateField('subject', 'err-subject', v => v.length >= 3);
+                if (id==='message') validateField('message', 'err-message', v => v.length >= 10);
+            });
+        });
+
+        // Cursor
+        const cDot = document.getElementById('cursorDot'), cRing = document.getElementById('cursorRing');
+        let dx=0, dy=0, rx=0, ry=0;
+        document.addEventListener('mousemove', e => { dx=e.clientX; dy=e.clientY; cDot.style.left=dx+'px'; cDot.style.top=dy+'px'; });
+        (function anim() { rx+=(dx-rx)*.12; ry+=(dy-ry)*.12; cRing.style.left=rx+'px'; cRing.style.top=ry+'px'; requestAnimationFrame(anim); })();
+        document.querySelectorAll('a,button,input,textarea').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+        document.addEventListener('mousedown', () => document.body.classList.add('cursor-clicking'));
+        document.addEventListener('mouseup', () => document.body.classList.remove('cursor-clicking'));
+    </script>
+</body>
+</html>
