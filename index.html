@@ -268,12 +268,6 @@
             if (window.scrollY > 30) { navbar.style.background = 'rgba(7,9,15,.95)'; navbar.style.backdropFilter = 'blur(20px)'; navbar.style.borderBottom = '1px solid #161b27'; }
             else { navbar.style.background = 'transparent'; navbar.style.backdropFilter = 'none'; navbar.style.borderBottom = 'none'; }
         });
-        // Mobile menu
-        const mBtn = document.getElementById('mobile-menu-button');
-        const mMenu = document.getElementById('mobile-menu');
-        if (mBtn && mMenu) {
-            mBtn.addEventListener('click', () => { mMenu.style.display = mMenu.style.display === 'block' ? 'none' : 'block'; });
-        }
         // Reveal
         const reveals = document.querySelectorAll('.reveal');
         const obs = new IntersectionObserver(entries => {
