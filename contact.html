@@ -231,11 +231,6 @@
             else { nav.style.background='transparent'; nav.style.backdropFilter='none'; nav.style.borderBottom='none'; }
         });
 
-        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-            const m = document.getElementById('mobile-menu');
-            m.style.display = m.style.display === 'block' ? 'none' : 'block';
-        });
-
         const revEls = document.querySelectorAll('.reveal,.reveal-left,.reveal-right');
         const ro = new IntersectionObserver(entries => {
             entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
