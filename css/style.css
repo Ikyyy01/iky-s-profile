@@ -51,7 +51,7 @@ body {
     color: var(--text-primary);
     font-family: var(--font-body);
     line-height: 1.7;
-    overflow-x: hidden;
+    overflow-x: visible;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     cursor: none;
@@ -638,4 +638,73 @@ body.cursor-clicking .cursor-dot {
         transition-duration: 0.01ms !important;
     }
     html { scroll-behavior: auto; }
+}
+
+/* ─── 29. PROJECT CARD OVERLAY FIX ─── */
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(7,9,15,.75);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity .3s;
+}
+
+.project-card:hover .card-overlay {
+  opacity: 1;
+}
+
+/* ─── FIX: Card pertama terpotong di grid ─── */
+#projects-grid {
+    /* Pastikan grid tidak overflow container */
+    min-width: 0;
+}
+
+/* Pastikan section tidak clip card */
+.pb-24 {
+    overflow: visible !important;
+}
+
+/* Izinkan section portfolio scroll horizontal jika perlu */
+body {
+    overflow-x: visible; /* pakai clip bukan hidden agar position:sticky & reveal tetap jalan */
+}
+
+/* ─── FIX 1: Cursor jangan muncul di pojok sebelum mouse masuk ─── */
+.cursor-dot,
+.cursor-ring {
+    opacity: 0;  /* mulai invisible, JS akan set opacity:1 pas mousemove */
+    transition: opacity 0.3s;
+}
+
+/* ─── FIX 2: Grid container jangan overflow ke kiri ─── */
+#projects-grid {
+    overflow: visible;
+}
+
+/* FIX CARD KIRI HILANG */
+.project-card {
+    position: relative;
+    z-index: 5;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+#projects-grid {
+    position: relative;
+    z-index: 2;
+    overflow: visible;
+}
+
+.grain-overlay {
+    z-index: 0;
+}
+
+.reveal {
+    opacity: 1 !important;
+    transform: none !important;
 }
