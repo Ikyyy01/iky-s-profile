@@ -1,461 +1,408 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portfolio | Iky</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<!-- NO external style.css / script.js to prevent reveal observer conflicts -->
-<style>
-*,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{background:#07090f;color:#c8d6e5;font-family:'DM Sans',sans-serif;cursor:none;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
-.font-display{font-family:'Syne',sans-serif;}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio — Iky</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { corePlugins: { preflight: false } }</script>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .page-hero { padding: 160px 0 80px; border-bottom: 1px solid var(--border); }
 
-/* Grain overlay */
-body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.04;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size:200px 200px;}
+    /* Filter bar */
+    .filter-bar {
+      display: flex; align-items: center; gap: 8px;
+      flex-wrap: wrap; margin: 48px 0;
+    }
+    .filter-chip {
+      font-size: .68rem; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      padding: 8px 18px;
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      color: var(--text3);
+      background: transparent;
+      cursor: none;
+      transition: all .2s;
+    }
+    .filter-chip:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .filter-chip.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #0a0a08;
+    }
 
-/* Loader */
-#page-loader{position:fixed;inset:0;z-index:10000;background:#07090f;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;transition:opacity .6s ease,visibility .6s ease;}
-#page-loader.hidden{opacity:0;visibility:hidden;pointer-events:none;}
-.loader-logo{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:#fff;}
-.loader-logo span{color:#6ee7b7;}
-.loader-bar-track{width:160px;height:2px;background:#1e2636;border-radius:2px;overflow:hidden;}
-.loader-bar-fill{height:100%;width:0%;background:#6ee7b7;border-radius:2px;animation:loader-fill 1.6s cubic-bezier(.4,0,.2,1) forwards;}
-@keyframes loader-fill{0%{width:0%}60%{width:75%}100%{width:100%}}
+    /* Project grid */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    .project-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: block;
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color .25s, transform .3s cubic-bezier(.34,1.2,.64,1);
+    }
+    .project-card:hover {
+      border-color: var(--border2);
+      transform: translateY(-6px);
+    }
 
-/* Custom cursor */
-.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
-.cursor-dot{width:6px;height:6px;background:#6ee7b7;transition:transform .15s,background .15s;}
-.cursor-ring{width:36px;height:36px;border:1.5px solid rgba(110,231,183,.5);transition:width .3s,height .3s,border-color .3s;}
-body.cursor-hover .cursor-dot{transform:translate(-50%,-50%) scale(0);}
-body.cursor-hover .cursor-ring{width:52px;height:52px;border-color:#6ee7b7;background:rgba(110,231,183,.06);}
-body.cursor-clicking .cursor-dot{transform:translate(-50%,-50%) scale(2.5);background:#34d399;}
-@media(hover:none){.cursor-dot,.cursor-ring{display:none;}body{cursor:auto;}}
+    /* Card thumbnail */
+    .card-thumb {
+      height: 220px;
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .card-thumb-emoji {
+      font-size: 4rem; z-index: 1; position: relative;
+      transition: transform .4s cubic-bezier(.34,1.56,.64,1);
+    }
+    .project-card:hover .card-thumb-emoji {
+      transform: scale(1.2) rotate(-6deg);
+    }
+    .card-thumb-overlay {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      gap: 10px;
+      background: rgba(10,10,8,.7);
+      backdrop-filter: blur(6px);
+      opacity: 0; z-index: 2;
+      transition: opacity .25s;
+    }
+    .project-card:hover .card-thumb-overlay { opacity: 1; }
+    .overlay-link {
+      font-size: .68rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: 8px 16px; border-radius: var(--radius);
+      text-decoration: none;
+      transition: background .2s;
+    }
+    .ol-primary {
+      background: var(--accent); color: #0a0a08;
+    }
+    .ol-ghost {
+      border: 1px solid rgba(255,255,255,.2);
+      color: rgba(255,255,255,.8);
+    }
 
-/* Scroll reveal - only for non-card sections */
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1);}
-.reveal.visible{opacity:1;transform:translateY(0);}
+    /* Card body */
+    .card-body { padding: 24px 28px 28px; }
+    .card-type {
+      font-size: .62rem; font-weight: 700;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem; letter-spacing: .02em;
+      color: #fff; line-height: 1.1;
+      margin-bottom: 10px;
+    }
+    .card-desc {
+      font-size: .82rem; color: var(--text2);
+      line-height: 1.7; margin-bottom: 16px;
+    }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .card-tag {
+      font-family: var(--font-mono);
+      font-size: .65rem; color: var(--text3);
+      padding: 3px 9px;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 3px;
+    }
 
-/* Status dot */
-.status-dot{width:8px;height:8px;border-radius:50%;background:#6ee7b7;flex-shrink:0;animation:pulse-dot 2s ease-in-out infinite;}
-@keyframes pulse-dot{0%{box-shadow:0 0 0 0 rgba(110,231,183,.6)}70%{box-shadow:0 0 0 8px rgba(110,231,183,0)}100%{box-shadow:0 0 0 0 rgba(110,231,183,0)}}
+    /* Featured (full-width) card */
+    .project-card.featured {
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .project-card.featured .card-thumb {
+      height: 100%; min-height: 280px;
+    }
 
-/* Filter chips */
-.filter-chip{font-size:.72rem;font-weight:600;padding:6px 16px;border-radius:999px;border:1px solid #2a3448;color:#94a3b8;background:transparent;cursor:none;transition:all .2s;}
-.filter-chip:hover{border-color:rgba(110,231,183,.3);color:#6ee7b7;}
-.filter-chip.active{background:rgba(110,231,183,.1);color:#6ee7b7;border-color:rgba(110,231,183,.35);}
+    /* Count label */
+    .projects-count {
+      font-family: var(--font-mono);
+      font-size: .72rem; color: var(--text3);
+      margin-bottom: 8px;
+    }
 
-/* PROJECT CARDS — always fully visible, no opacity animation */
-.project-card{
-  position:relative;
-  background:#161b27;
-  border:1px solid #1e2636;
-  border-radius:20px;
-  overflow:hidden;
-  opacity:1 !important;
-  transform:none;
-  transition:border-color .3s,transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;
-  cursor:none;
-  display:block;
-  visibility:visible !important;
-}
-.project-card:hover{border-color:rgba(110,231,183,.2);transform:translateY(-6px);box-shadow:0 24px 48px rgba(0,0,0,.35);}
-
-/* Card thumb */
-.card-thumb{height:200px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
-.card-thumb-icon{font-size:3.5rem;z-index:1;position:relative;transition:transform .5s cubic-bezier(.34,1.56,.64,1);display:block;}
-.project-card:hover .card-thumb-icon{transform:scale(1.15) rotate(-5deg);}
-
-/* Card overlay on hover */
-.card-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:12px;background:rgba(7,9,15,.75);backdrop-filter:blur(6px);opacity:0;transition:opacity .3s;z-index:2;}
-.project-card:hover .card-overlay{opacity:1;}
-
-/* Overlay buttons */
-.overlay-btn{font-size:.72rem;font-weight:700;padding:8px 16px;border-radius:999px;border:1px solid;cursor:none;transition:background .2s;text-decoration:none;display:inline-flex;align-items:center;}
-.overlay-btn-primary{background:#6ee7b7;color:#07090f;border-color:#6ee7b7;}
-.overlay-btn-primary:hover{background:#34d399;}
-.overlay-btn-ghost{background:transparent;color:#c8d6e5;border-color:rgba(255,255,255,.2);}
-.overlay-btn-ghost:hover{background:rgba(255,255,255,.08);}
-
-/* Project tags */
-.proj-tag{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:999px;border:1px solid;}
-
-/* Modal */
-#modal-overlay{position:fixed;inset:0;z-index:9000;background:rgba(7,9,15,.85);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s;}
-#modal-overlay.open{opacity:1;visibility:visible;}
-#modal-box{background:#161b27;border:1px solid #2a3448;border-radius:24px;max-width:640px;width:100%;max-height:90vh;overflow-y:auto;transform:scale(.95) translateY(16px);transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
-#modal-overlay.open #modal-box{transform:scale(1) translateY(0);}
-
-/* Utilities */
-.section-label{font-size:.7rem;font-weight:600;letter-spacing:.25em;text-transform:uppercase;color:#6ee7b7;}
-.link-underline{position:relative;text-decoration:none;color:#94a3b8;transition:color .15s;}
-.link-underline::after{content:'';position:absolute;bottom:-2px;left:0;width:0%;height:1px;background:#6ee7b7;transition:width .3s;}
-.link-underline:hover{color:#6ee7b7;}
-.link-underline:hover::after{width:100%;}
-
-/* Tooltip */
-[data-tooltip]{position:relative;}
-[data-tooltip]::after{content:attr(data-tooltip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(4px);background:#1e2636;color:#e2e8f0;font-size:.7rem;padding:4px 10px;border-radius:6px;white-space:nowrap;pointer-events:none;opacity:0;border:1px solid #2a3448;transition:opacity .15s,transform .15s;z-index:100;}
-[data-tooltip]:hover::after{opacity:1;transform:translateX(-50%) translateY(0);}
-
-/* Social */
-.social-btn{width:38px;height:38px;border-radius:50%;border:1px solid #2a3448;display:flex;align-items:center;justify-content:center;color:#475569;text-decoration:none;transition:all .2s;}
-.social-btn:hover{border-color:rgba(110,231,183,.35);color:#6ee7b7;background:rgba(110,231,183,.07);transform:translateY(-2px);}
-
-/* Count badge */
-#project-count{font-size:.7rem;font-weight:700;padding:2px 8px;background:rgba(110,231,183,.1);color:#6ee7b7;border-radius:999px;border:1px solid rgba(110,231,183,.25);}
-
-/* Scrollbar */
-::-webkit-scrollbar{width:4px;}
-::-webkit-scrollbar-track{background:#07090f;}
-::-webkit-scrollbar-thumb{background:#2a3448;border-radius:4px;}
-::-webkit-scrollbar-thumb:hover{background:#6ee7b7;}
-::selection{background:rgba(110,231,183,.2);color:#fff;}
-
-/* Mobile menu */
-#mobile-menu{display:none;}
-#mobile-menu.open{display:block;}
-
-/* Nav */
-#navbar{transition:background .3s,border-color .3s;}
-</style>
+    @media (max-width: 768px) {
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-card.featured { grid-column: span 1; display: block; }
+      .project-card.featured .card-thumb { height: 200px; }
+    }
+  </style>
 </head>
-<body class="min-h-screen antialiased">
-
-<div class="cursor-dot" id="cursorDot"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-<div id="page-loader"><div class="loader-logo">iky<span>.</span></div><div class="loader-bar-track"><div class="loader-bar-fill"></div></div></div>
-
-<!-- NAV -->
-<nav id="navbar" class="fixed w-full z-50 top-0">
-  <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-    <a href="index.html" class="font-display text-xl font-bold text-white">iky<span style="color:#6ee7b7">.</span></a>
-    <ul class="hidden md:flex space-x-8 text-sm font-medium items-center" style="color:#94a3b8;">
-      <li><a href="index.html" class="link-underline">Home</a></li>
-      <li><a href="about.html" class="link-underline">About</a></li>
-      <li><a href="portfolio.html" style="color:#6ee7b7;border-bottom:2px solid #6ee7b7;padding-bottom:2px;">Portfolio</a></li>
-      <li><a href="contact.html" class="link-underline">Contact</a></li>
-    </ul>
-    <a href="mailto:riskyjanuarlbs01@gmail.com" class="hidden md:inline-flex items-center gap-2 text-sm font-semibold px-5 py-2.5 rounded-full" style="background:#6ee7b7;color:#07090f;position:relative;z-index:1;">
-      Hire Me <svg width="12" height="12" fill="none" viewBox="0 0 12 12"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="#07090f" stroke-width="1.5" stroke-linecap="round"/></svg>
-    </a>
-    <button id="mobile-menu-btn" class="md:hidden" style="color:#94a3b8;background:none;border:none;cursor:none;">
-      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-    </button>
+<body>
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div id="page-loader">
+    <div class="loader-mark">IKY<span>.</span></div>
+    <div class="loader-bar-track"><div class="loader-bar-fill"></div></div>
   </div>
-  <div id="mobile-menu" style="background:#161b27;border-top:1px solid #1e2636;">
-    <ul class="flex flex-col px-8 py-6 space-y-5 text-sm font-medium">
-      <li><a href="index.html" style="color:#94a3b8;">Home</a></li>
-      <li><a href="about.html" style="color:#94a3b8;">About</a></li>
-      <li><a href="portfolio.html" style="color:#6ee7b7;">Portfolio</a></li>
-      <li><a href="contact.html" style="color:#94a3b8;">Contact</a></li>
-      <li style="padding-top:1rem;border-top:1px solid #2a3448;"><a href="mailto:riskyjanuarlbs01@gmail.com" class="block text-center font-bold py-3 rounded-full" style="background:#6ee7b7;color:#07090f;">Hire Me</a></li>
-    </ul>
-  </div>
-</nav>
 
-<!-- HERO -->
-<section class="relative pt-40 pb-12 overflow-hidden">
-  <div style="position:absolute;top:-80px;right:-80px;width:480px;height:480px;background:radial-gradient(circle,rgba(110,231,183,.05) 0%,transparent 70%);border-radius:50%;pointer-events:none;"></div>
-  <div class="max-w-7xl mx-auto px-6 text-center">
-    <div class="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full text-xs font-semibold tracking-wider uppercase" style="background:rgba(110,231,183,.05);border:1px solid rgba(110,231,183,.2);color:#6ee7b7;">
-      <span class="status-dot"></span> 3 Projects · Updated 2026
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">IKY<span>.</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <a href="mailto:riskyjanuarlbs01@gmail.com" class="nav-cta">Hire Me</a>
+      <button class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></button>
     </div>
-    <h1 class="font-display font-bold text-white mb-5" style="font-size:clamp(2.4rem,5.5vw,4.5rem);line-height:1.05;">
-      My <span style="background:linear-gradient(135deg,#6ee7b7,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Creative</span> Works
-    </h1>
-    <p class="max-w-xl mx-auto leading-relaxed" style="color:#94a3b8;">A collection of projects where system logic meets intuitive design — from UI/UX wireframing to data science and mini games.</p>
+  </nav>
+  <div id="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="contact.html">Contact</a>
+    <a href="mailto:riskyjanuarlbs01@gmail.com" class="mobile-menu-cta">✉ Hire Me</a>
   </div>
-</section>
 
-<!-- FILTER + GRID -->
-<section class="pb-24">
-  <div class="max-w-7xl mx-auto px-6">
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="section-label reveal">Selected work</div>
+      <h1 class="display-heading reveal delay-1" style="font-size: clamp(4rem,9vw,7.5rem); margin-top:16px;">
+        PORTFOLIO<span style="color:var(--accent)">.</span>
+      </h1>
+      <p class="reveal delay-2" style="color:var(--text2); font-size:1rem; max-width:520px; line-height:1.8; margin-top:20px;">
+        A collection of projects spanning mobile apps, web interfaces, and UX design —
+        built with care and attention to detail.
+      </p>
+    </div>
+  </section>
 
-    <!-- Filter -->
-    <div class="flex flex-wrap items-center justify-between gap-4 mb-10">
-      <div class="flex flex-wrap gap-2">
+  <!-- PROJECTS -->
+  <section style="padding: 60px 0 100px;">
+    <div class="container">
+
+      <!-- Filter -->
+      <div class="filter-bar reveal">
         <button class="filter-chip active" data-filter="all">All</button>
-        <button class="filter-chip" data-filter="uiux">UI/UX</button>
-        <button class="filter-chip" data-filter="ml">ML / Data</button>
-        <button class="filter-chip" data-filter="mobile">Mobile / Game</button>
-      </div>
-      <div class="text-sm" style="color:#475569;">Showing <span id="project-count">3</span> projects</div>
-    </div>
-
-    <!-- Cards grid -->
-    <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-
-      <!-- Card 1: UI/UX -->
-      <div class="project-card"
-        data-category="uiux"
-        data-title="Prototype Website Design"
-        data-desc="A high-fidelity UI/UX prototype built in Figma — covering full user flows, interactive components, and responsive layouts for a modern web platform. Designed with a focus on clean visual hierarchy and intuitive navigation."
-        data-tags="UI/UX,Figma,Prototype"
-        data-icon="🎨"
-        data-color="rgba(110,231,183,.12)"
-        data-year="2025"
-        data-link="https://www.figma.com/design/q2pbYVaKsJcwb8ilUqtYQ3/Prototype-Website?node-id=0-1&t=oOVwoH5GByXAzRoy-1">
-        <div class="card-thumb" style="background:linear-gradient(135deg,#0c1e1a 0%,#0e1c22 100%);">
-          <div class="card-thumb-icon">🎨</div>
-          <div class="card-overlay">
-            <button class="overlay-btn overlay-btn-primary open-modal">Quick View</button>
-            <a href="https://www.figma.com/design/q2pbYVaKsJcwb8ilUqtYQ3/Prototype-Website?node-id=0-1&t=oOVwoH5GByXAzRoy-1" target="_blank" rel="noopener" class="overlay-btn overlay-btn-ghost">Figma →</a>
-          </div>
-        </div>
-        <div class="p-7">
-          <div class="flex flex-wrap gap-2 mb-4">
-            <span class="proj-tag" style="color:#6ee7b7;border-color:rgba(110,231,183,.3);background:rgba(110,231,183,.08);">UI/UX</span>
-            <span class="proj-tag" style="color:#38bdf8;border-color:rgba(56,189,248,.3);background:rgba(56,189,248,.08);">Figma</span>
-          </div>
-          <h3 class="font-display font-bold text-white text-lg mb-2">Prototype Website Design</h3>
-          <p class="text-sm leading-relaxed mb-5" style="color:#94a3b8;">High-fidelity Figma prototype with full user flows, interactive components, and responsive layouts.</p>
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-medium" style="color:#475569;">2025</span>
-            <button class="open-modal text-sm font-semibold flex items-center gap-1.5" style="color:#6ee7b7;background:none;border:none;cursor:none;">
-              View Details <svg width="12" height="12" fill="none" viewBox="0 0 12 12"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </button>
-          </div>
-        </div>
+        <button class="filter-chip" data-filter="mobile">Mobile</button>
+        <button class="filter-chip" data-filter="web">Web</button>
+        <button class="filter-chip" data-filter="design">UI/UX Design</button>
       </div>
 
-      <!-- Card 2: Data Science -->
-      <div class="project-card"
-        data-category="ml"
-        data-title="Data Science &amp; Analysis"
-        data-desc="A data science project covering exploratory data analysis, preprocessing, visualization, and machine learning model implementation. The repository includes Jupyter notebooks with structured pipelines from raw data to insights."
-        data-tags="Python,Data Science,EDA,Machine Learning"
-        data-icon="📊"
-        data-color="rgba(59,130,246,.12)"
-        data-year="2024"
-        data-link="https://github.com/Ikyyy01/datasains/tree/main">
-        <div class="card-thumb" style="background:linear-gradient(135deg,#0d1520 0%,#0d1a24 100%);">
-          <div class="card-thumb-icon">📊</div>
-          <div class="card-overlay">
-            <button class="overlay-btn overlay-btn-primary open-modal">Quick View</button>
-            <a href="https://github.com/Ikyyy01/datasains/tree/main" target="_blank" rel="noopener" class="overlay-btn overlay-btn-ghost">GitHub →</a>
+      <div class="projects-count reveal" id="projects-count">Showing 6 projects</div>
+
+      <div class="projects-grid" id="projects-grid">
+
+        <!-- FEATURED -->
+        <a href="#" class="project-card featured reveal" data-category="mobile">
+          <div class="card-thumb" style="background: linear-gradient(135deg, #1a1a17 0%, #0f1a12 100%);">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%, rgba(126,207,142,.06) 0%, transparent 70%);"></div>
+            <span class="card-thumb-emoji">🛍️</span>
+            <div class="card-thumb-overlay">
+              <a href="#" class="overlay-link ol-primary">View Case Study</a>
+              <a href="#" class="overlay-link ol-ghost">Live Demo</a>
+            </div>
           </div>
-        </div>
-        <div class="p-7">
-          <div class="flex flex-wrap gap-2 mb-4">
-            <span class="proj-tag" style="color:#60a5fa;border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.08);">Data Science</span>
-            <span class="proj-tag" style="color:#22d3ee;border-color:rgba(34,211,238,.3);background:rgba(34,211,238,.08);">Python</span>
+          <div class="card-body" style="display:flex;flex-direction:column;justify-content:center;padding:40px 40px;">
+            <div class="card-type">Featured · Mobile App</div>
+            <div class="card-title" style="font-size:2rem;">SHOPEASE<br>E-COMMERCE</div>
+            <p class="card-desc" style="max-width:400px;">
+              A full-featured e-commerce mobile app built with Flutter. Clean navigation,
+              smooth animations, and a checkout experience users actually enjoy.
+            </p>
+            <div class="card-tags">
+              <span class="card-tag">Flutter</span>
+              <span class="card-tag">Firebase</span>
+              <span class="card-tag">Figma</span>
+              <span class="card-tag">GetX</span>
+            </div>
           </div>
-          <h3 class="font-display font-bold text-white text-lg mb-2">Data Science &amp; Analysis</h3>
-          <p class="text-sm leading-relaxed mb-5" style="color:#94a3b8;">EDA, preprocessing, visualization, and ML model implementation — from raw data to actionable insights.</p>
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-medium" style="color:#475569;">2024</span>
-            <button class="open-modal text-sm font-semibold flex items-center gap-1.5" style="color:#60a5fa;background:none;border:none;cursor:none;">
-              View Details <svg width="12" height="12" fill="none" viewBox="0 0 12 12"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 3: Mini Game -->
-      <div class="project-card"
-        data-category="mobile"
-        data-title="Mini Game — Under Cover"
-        data-desc="A browser-based social deduction mini game deployed on Vercel. Players take on undercover roles in a fun and engaging experience — featuring clean UI, smooth interactions, and real-time gameplay mechanics designed for both mobile and desktop."
-        data-tags="Game Dev,JavaScript,Vercel"
-        data-icon="🕵️"
-        data-color="rgba(168,85,247,.12)"
-        data-year="2025"
-        data-link="https://undercoverbyiky.vercel.app/">
-        <div class="card-thumb" style="background:linear-gradient(135deg,#160d20 0%,#1a0e20 100%);">
-          <div class="card-thumb-icon">🕵️</div>
-          <div class="card-overlay">
-            <button class="overlay-btn overlay-btn-primary open-modal">Quick View</button>
-            <a href="https://undercoverbyiky.vercel.app/" target="_blank" rel="noopener" class="overlay-btn overlay-btn-ghost">Play →</a>
-          </div>
-        </div>
-        <div class="p-7">
-          <div class="flex flex-wrap gap-2 mb-4">
-            <span class="proj-tag" style="color:#c084fc;border-color:rgba(192,132,252,.3);background:rgba(192,132,252,.08);">Game Dev</span>
-            <span class="proj-tag" style="color:#f472b6;border-color:rgba(244,114,182,.3);background:rgba(244,114,182,.08);">Live</span>
-          </div>
-          <h3 class="font-display font-bold text-white text-lg mb-2">Mini Game — Under Cover</h3>
-          <p class="text-sm leading-relaxed mb-5" style="color:#94a3b8;">A social deduction mini game deployed live on Vercel with clean UI and smooth gameplay for mobile &amp; desktop.</p>
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-medium" style="color:#475569;">2025</span>
-            <button class="open-modal text-sm font-semibold flex items-center gap-1.5" style="color:#c084fc;background:none;border:none;cursor:none;">
-              View Details <svg width="12" height="12" fill="none" viewBox="0 0 12 12"><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <div id="empty-state" class="text-center py-24" style="display:none;">
-      <p class="text-4xl mb-4">🔍</p>
-      <p class="font-display font-bold text-white mb-2">No projects here yet</p>
-      <p class="text-sm" style="color:#475569;">Try a different filter category.</p>
-    </div>
-  </div>
-</section>
-
-<!-- STATS -->
-<section class="py-16 reveal" style="border-top:1px solid #1e2636;border-bottom:1px solid #1e2636;background:#0d1117;">
-  <div class="max-w-4xl mx-auto px-6 grid grid-cols-3 gap-8 text-center">
-    <div><p class="font-display font-bold mb-1" style="font-size:2.5rem;line-height:1;color:#6ee7b7;">3+</p><p class="text-xs uppercase tracking-widest" style="color:#475569;">Projects Built</p></div>
-    <div><p class="font-display font-bold mb-1" style="font-size:2.5rem;line-height:1;color:#6ee7b7;">3</p><p class="text-xs uppercase tracking-widest" style="color:#475569;">Domains</p></div>
-    <div><p class="font-display font-bold mb-1" style="font-size:2.5rem;line-height:1;color:#6ee7b7;">∞</p><p class="text-xs uppercase tracking-widest" style="color:#475569;">More Coming</p></div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="py-20 reveal">
-  <div class="max-w-3xl mx-auto px-6 text-center">
-    <div class="relative rounded-3xl p-12 border overflow-hidden" style="background:linear-gradient(135deg,#0d1117 0%,#1e2636 100%);border-color:#1e2636;">
-      <div class="absolute top-0 left-0 w-14 h-14" style="opacity:.25;border-top:1px solid #6ee7b7;border-left:1px solid #6ee7b7;border-radius:12px 0 0 0;"></div>
-      <div class="absolute bottom-0 right-0 w-14 h-14" style="opacity:.25;border-bottom:1px solid #6ee7b7;border-right:1px solid #6ee7b7;border-radius:0 0 12px 0;"></div>
-      <span class="section-label block mb-3">Got an Idea?</span>
-      <h2 class="font-display font-bold text-white text-3xl mb-4">Let's Build Together</h2>
-      <p class="text-sm leading-relaxed mb-8 max-w-md mx-auto" style="color:#94a3b8;">Open to freelance, internship, and collaboration opportunities. Have a project in mind? Let's talk.</p>
-      <a href="contact.html" class="inline-flex items-center gap-2 font-semibold text-sm px-8 py-4 rounded-xl" style="background:#6ee7b7;color:#07090f;">
-        Start a Conversation <svg width="14" height="14" fill="none" viewBox="0 0 14 14"><path d="M2.5 11.5L11.5 2.5M11.5 2.5H5M11.5 2.5V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer class="py-10" style="border-top:1px solid #1e2636;">
-  <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-    <a href="index.html" class="font-display text-lg font-bold text-white">iky<span style="color:#6ee7b7;">.</span></a>
-    <p class="text-xs" style="color:#2a3448;">© 2026 Muhammad Risky Januar Lubis</p>
-    <div class="flex gap-3">
-      <a href="https://www.instagram.com/riskyjanuarl" target="_blank" rel="noopener" class="social-btn" data-tooltip="Instagram" aria-label="Instagram">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-      </a>
-      <a href="https://www.linkedin.com/in/muhammad-risky-januar-lubis-a3b554350" target="_blank" rel="noopener" class="social-btn" data-tooltip="LinkedIn" aria-label="LinkedIn">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-      </a>
-      <a href="https://github.com/Ikyyy01" target="_blank" rel="noopener" class="social-btn" data-tooltip="GitHub" aria-label="GitHub">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-      </a>
-    </div>
-  </div>
-</footer>
-
-<!-- MODAL -->
-<div id="modal-overlay" role="dialog" aria-modal="true">
-  <div id="modal-box">
-    <div id="modal-thumb" class="h-48 flex items-center justify-center" style="border-radius:24px 24px 0 0;overflow:hidden;">
-      <span id="modal-icon" style="font-size:4rem;position:relative;z-index:1;"></span>
-    </div>
-    <div class="p-8">
-      <div id="modal-tags" class="flex flex-wrap gap-2 mb-4"></div>
-      <h2 id="modal-title" class="font-display font-bold text-white text-2xl mb-3"></h2>
-      <p id="modal-desc" class="text-sm leading-relaxed mb-6" style="color:#94a3b8;"></p>
-      <div class="rounded-xl p-5 mb-6" style="background:#0d1117;border:1px solid #1e2636;">
-        <div class="grid grid-cols-2 gap-4 text-sm">
-          <div><p class="text-xs uppercase tracking-widest mb-1" style="color:#2a3448;">Year</p><p id="modal-year" class="font-semibold text-white"></p></div>
-          <div><p class="text-xs uppercase tracking-widest mb-1" style="color:#2a3448;">Status</p><p class="font-semibold" style="color:#6ee7b7;">Completed ✓</p></div>
-        </div>
-      </div>
-      <div class="flex gap-3">
-        <a id="modal-link" href="#" target="_blank" rel="noopener" class="flex-1 inline-flex items-center justify-center gap-2 font-semibold text-sm py-3 rounded-xl" style="background:#6ee7b7;color:#07090f;">
-          Open Project <svg width="13" height="13" fill="none" viewBox="0 0 13 13"><path d="M2 11L11 2M11 2H4.5M11 2V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </a>
-        <button id="modal-close" class="px-5 py-3 rounded-xl text-sm font-semibold" style="background:#0d1117;border:1px solid #2a3448;color:#94a3b8;cursor:none;">Close</button>
+
+        <!-- Card 2 -->
+        <a href="#" class="project-card reveal" data-category="web">
+          <div class="card-thumb" style="background: linear-gradient(135deg, #0d1520 0%, #0a0a08 100%);">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 60% 40%, rgba(59,130,246,.06) 0%, transparent 70%);"></div>
+            <span class="card-thumb-emoji">📊</span>
+            <div class="card-thumb-overlay">
+              <a href="#" class="overlay-link ol-primary">View Project</a>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-type">Web App</div>
+            <div class="card-title">ANALYTICS<br>DASHBOARD</div>
+            <p class="card-desc">Real-time analytics dashboard with interactive charts and a clean dark UI.</p>
+            <div class="card-tags">
+              <span class="card-tag">React</span>
+              <span class="card-tag">Next.js</span>
+              <span class="card-tag">Chart.js</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 3 -->
+        <a href="#" class="project-card reveal delay-1" data-category="mobile">
+          <div class="card-thumb" style="background: linear-gradient(135deg, #130d1a 0%, #0a0a08 100%);">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 40% 60%, rgba(168,85,247,.06) 0%, transparent 70%);"></div>
+            <span class="card-thumb-emoji">💪</span>
+            <div class="card-thumb-overlay">
+              <a href="#" class="overlay-link ol-primary">View Project</a>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-type">Mobile App</div>
+            <div class="card-title">FITNESS<br>TRACKER</div>
+            <p class="card-desc">Health & workout tracking app with beautiful progress visualization and habit streaks.</p>
+            <div class="card-tags">
+              <span class="card-tag">Flutter</span>
+              <span class="card-tag">SQLite</span>
+              <span class="card-tag">FL Chart</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 4 -->
+        <a href="#" class="project-card reveal" data-category="design">
+          <div class="card-thumb" style="background: linear-gradient(135deg, #1a1208 0%, #0a0a08 100%);">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%, rgba(240,165,0,.06) 0%, transparent 70%);"></div>
+            <span class="card-thumb-emoji">🎨</span>
+            <div class="card-thumb-overlay">
+              <a href="#" class="overlay-link ol-primary">View on Figma</a>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-type">UI/UX Design</div>
+            <div class="card-title">BRAND &amp;<br>DESIGN SYSTEM</div>
+            <p class="card-desc">Comprehensive design system with components, tokens, and usage documentation.</p>
+            <div class="card-tags">
+              <span class="card-tag">Figma</span>
+              <span class="card-tag">Design Tokens</span>
+              <span class="card-tag">Components</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 5 -->
+        <a href="#" class="project-card reveal delay-1" data-category="web">
+          <div class="card-thumb" style="background: linear-gradient(135deg, #0d1a18 0%, #0a0a08 100%);">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 40% 50%, rgba(6,182,212,.06) 0%, transparent 70%);"></div>
+            <span class="card-thumb-emoji">🏡</span>
+            <div class="card-thumb-overlay">
+              <a href="#" class="overlay-link ol-primary">View Project</a>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-type">Web · UI/UX</div>
+            <div class="card-title">PROPERTY<br>LISTING APP</div>
+            <p class="card-desc">Modern real estate listing with map integration and advanced filter search.</p>
+            <div class="card-tags">
+              <span class="card-tag">Next.js</span>
+              <span class="card-tag">Mapbox</span>
+              <span class="card-tag">Figma</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 6 -->
+        <a href="#" class="project-card reveal delay-2" data-category="mobile">
+          <div class="card-thumb" style="background: linear-gradient(135deg, #1a0d0d 0%, #0a0a08 100%);">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 60% 50%, rgba(239,68,68,.05) 0%, transparent 70%);"></div>
+            <span class="card-thumb-emoji">🍔</span>
+            <div class="card-thumb-overlay">
+              <a href="#" class="overlay-link ol-primary">View Project</a>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-type">Mobile App</div>
+            <div class="card-title">FOOD<br>DELIVERY UI</div>
+            <p class="card-desc">Food ordering app UI with smooth micro-animations and a seamless ordering flow.</p>
+            <div class="card-tags">
+              <span class="card-tag">Flutter</span>
+              <span class="card-tag">Lottie</span>
+              <span class="card-tag">BLoC</span>
+            </div>
+          </div>
+        </a>
+
       </div>
     </div>
-  </div>
-</div>
+  </section>
 
-<script>
-// ── Loader
-window.addEventListener('load', () => {
-  setTimeout(() => { const l = document.getElementById('page-loader'); if (l) l.classList.add('hidden'); }, 1600);
-});
+  <!-- CTA -->
+  <section style="padding:0 0 100px;">
+    <div class="container">
+      <div class="reveal" style="text-align:center; padding: 80px 40px; border: 1px solid var(--border2); border-radius: var(--radius-lg); background:var(--bg2);">
+        <div class="section-label" style="justify-content:center; margin-bottom:16px;">Ready to build?</div>
+        <h2 class="display-heading" style="font-size:clamp(2.5rem,5vw,4rem);">
+          HAVE A PROJECT<span style="color:var(--accent)">?</span>
+        </h2>
+        <p style="color:var(--text2); margin-top:16px; font-size:.95rem; max-width:400px; margin-left:auto; margin-right:auto; line-height:1.7;">
+          I'm available for freelance work and full-time opportunities.
+        </p>
+        <div style="margin-top:32px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+          <a href="contact.html" class="btn-primary">Get In Touch →</a>
+          <a href="about.html" class="btn-outline">About Me</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-// ── Nav scroll
-const nav = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  if (window.scrollY > 30) { nav.style.background='rgba(7,9,15,.95)'; nav.style.backdropFilter='blur(20px)'; nav.style.borderBottom='1px solid #161b27'; }
-  else { nav.style.background='transparent'; nav.style.backdropFilter='none'; nav.style.borderBottom='none'; }
-}, { passive: true });
+  <footer>
+    <div class="footer-inner">
+      <a href="index.html" class="footer-logo">IKY<span>.</span></a>
+      <p class="footer-copy">© 2025 Risky Januar · UI/UX & Mobile Developer</p>
+      <div class="social-links">
+        <a href="#" class="social-link">GH</a>
+        <a href="#" class="social-link">IN</a>
+        <a href="#" class="social-link">DR</a>
+        <a href="mailto:riskyjanuarlbs01@gmail.com" class="social-link">✉</a>
+      </div>
+    </div>
+  </footer>
 
-// ── Mobile menu
-document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-  const m = document.getElementById('mobile-menu');
-  m.classList.toggle('open');
-});
+  <script src="js/script.js"></script>
+  <script>
+    // Filter functionality
+    const chips = document.querySelectorAll('.filter-chip');
+    const cards = document.querySelectorAll('.project-card');
+    const countEl = document.getElementById('projects-count');
 
-// ── Scroll reveal (only for non-card sections)
-const reveals = document.querySelectorAll('.reveal');
-const ro = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
-}, { threshold: 0.05 });
-reveals.forEach(el => {
-  if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible');
-  else ro.observe(el);
-});
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
 
-// ── Filter
-const cards = document.querySelectorAll('.project-card');
-const countBadge = document.getElementById('project-count');
-const emptyState = document.getElementById('empty-state');
-document.querySelectorAll('.filter-chip').forEach(chip => {
-  chip.addEventListener('click', () => {
-    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-    chip.classList.add('active');
-    const f = chip.dataset.filter;
-    let v = 0;
-    cards.forEach(card => {
-      const match = f === 'all' || card.dataset.category === f;
-      card.style.display = match ? 'block' : 'none';
-      if (match) v++;
+        const filter = chip.dataset.filter;
+        let visible = 0;
+
+        cards.forEach(card => {
+          const match = filter === 'all' || card.dataset.category === filter;
+          card.style.display = match ? '' : 'none';
+          // handle featured spanning
+          if (card.classList.contains('featured')) {
+            card.style.gridColumn = (match && filter === 'all') ? 'span 2' : 'span 1';
+          }
+          if (match) visible++;
+        });
+
+        countEl.textContent = `Showing ${visible} project${visible !== 1 ? 's' : ''}`;
+      });
     });
-    countBadge.textContent = v;
-    emptyState.style.display = v === 0 ? 'block' : 'none';
-  });
-});
-
-// ── Modal
-const overlay = document.getElementById('modal-overlay');
-function openModal(card) {
-  document.getElementById('modal-icon').textContent = card.dataset.icon;
-  document.getElementById('modal-title').textContent = card.dataset.title;
-  document.getElementById('modal-desc').textContent = card.dataset.desc;
-  document.getElementById('modal-year').textContent = card.dataset.year;
-  document.getElementById('modal-link').href = card.dataset.link;
-  document.getElementById('modal-thumb').style.background = 'linear-gradient(135deg,' + card.dataset.color + ' 0%,rgba(7,9,15,.4) 100%)';
-  const tw = document.getElementById('modal-tags');
-  tw.innerHTML = '';
-  card.dataset.tags.split(',').forEach(tag => {
-    const s = document.createElement('span');
-    s.style.cssText = 'font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:999px;border:1px solid rgba(110,231,183,.3);background:rgba(110,231,183,.08);color:#6ee7b7;display:inline-block;margin:2px;';
-    s.textContent = tag.trim();
-    tw.appendChild(s);
-  });
-  overlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeModal() { overlay.classList.remove('open'); document.body.style.overflow = ''; }
-document.querySelectorAll('.open-modal').forEach(btn => { btn.addEventListener('click', () => openModal(btn.closest('.project-card'))); });
-document.getElementById('modal-close').addEventListener('click', closeModal);
-overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-// ── Custom cursor
-const cDot = document.getElementById('cursorDot');
-const cRing = document.getElementById('cursorRing');
-let dx = 0, dy = 0, rx = 0, ry = 0;
-document.addEventListener('mousemove', e => { dx = e.clientX; dy = e.clientY; cDot.style.left = dx + 'px'; cDot.style.top = dy + 'px'; });
-(function anim() { rx += (dx - rx) * .12; ry += (dy - ry) * .12; cRing.style.left = rx + 'px'; cRing.style.top = ry + 'px'; requestAnimationFrame(anim); })();
-document.querySelectorAll('a, button').forEach(el => {
-  el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-  el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-});
-document.addEventListener('mousedown', () => document.body.classList.add('cursor-clicking'));
-document.addEventListener('mouseup', () => document.body.classList.remove('cursor-clicking'));
-</script>
+  </script>
 </body>
 </html>
