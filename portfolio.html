@@ -4,152 +4,46 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portfolio — Iky</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>tailwind.config = { corePlugins: { preflight: false } }</script>
+  <meta name="description" content="Portfolio of Risky Januar (Iky) — UI/UX Design, Mobile Apps, and Web Development projects.">
   <link rel="stylesheet" href="css/style.css">
   <style>
-    .page-hero { padding: 160px 0 80px; border-bottom: 1px solid var(--border); }
-
-    /* Filter bar */
-    .filter-bar {
-      display: flex; align-items: center; gap: 8px;
-      flex-wrap: wrap; margin: 48px 0;
-    }
-    .filter-chip {
-      font-size: .68rem; font-weight: 700;
-      letter-spacing: .12em; text-transform: uppercase;
-      padding: 8px 18px;
-      border: 1px solid var(--border2);
-      border-radius: var(--radius);
-      color: var(--text3);
-      background: transparent;
-      cursor: none;
-      transition: all .2s;
-    }
-    .filter-chip:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-    .filter-chip.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #0a0a08;
-    }
-
-    /* Project grid */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 24px;
-    }
-    .project-card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      display: block;
-      text-decoration: none;
-      color: var(--text);
-      transition: border-color .25s, transform .3s cubic-bezier(.34,1.2,.64,1);
-    }
-    .project-card:hover {
-      border-color: var(--border2);
-      transform: translateY(-6px);
-    }
-
-    /* Card thumbnail */
-    .card-thumb {
-      height: 220px;
-      position: relative; overflow: hidden;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .card-thumb-emoji {
-      font-size: 4rem; z-index: 1; position: relative;
-      transition: transform .4s cubic-bezier(.34,1.56,.64,1);
-    }
-    .project-card:hover .card-thumb-emoji {
-      transform: scale(1.2) rotate(-6deg);
-    }
-    .card-thumb-overlay {
-      position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-      gap: 10px;
-      background: rgba(10,10,8,.7);
-      backdrop-filter: blur(6px);
-      opacity: 0; z-index: 2;
-      transition: opacity .25s;
-    }
-    .project-card:hover .card-thumb-overlay { opacity: 1; }
-    .overlay-link {
-      font-size: .68rem; font-weight: 700;
-      letter-spacing: .1em; text-transform: uppercase;
-      padding: 8px 16px; border-radius: var(--radius);
-      text-decoration: none;
-      transition: background .2s;
-    }
-    .ol-primary {
-      background: var(--accent); color: #0a0a08;
-    }
-    .ol-ghost {
-      border: 1px solid rgba(255,255,255,.2);
-      color: rgba(255,255,255,.8);
-    }
-
-    /* Card body */
-    .card-body { padding: 24px 28px 28px; }
-    .card-type {
-      font-size: .62rem; font-weight: 700;
-      letter-spacing: .14em; text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 8px;
-    }
-    .card-title {
-      font-family: var(--font-display);
-      font-size: 1.4rem; letter-spacing: .02em;
-      color: #fff; line-height: 1.1;
-      margin-bottom: 10px;
-    }
-    .card-desc {
-      font-size: .82rem; color: var(--text2);
-      line-height: 1.7; margin-bottom: 16px;
-    }
-    .card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-    .card-tag {
-      font-family: var(--font-mono);
-      font-size: .65rem; color: var(--text3);
-      padding: 3px 9px;
-      background: var(--surface);
-      border: 1px solid var(--border2);
-      border-radius: 3px;
-    }
-
-    /* Featured (full-width) card */
-    .project-card.featured {
-      grid-column: span 2;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-    }
-    .project-card.featured .card-thumb {
-      height: 100%; min-height: 280px;
-    }
-
-    /* Count label */
-    .projects-count {
-      font-family: var(--font-mono);
-      font-size: .72rem; color: var(--text3);
-      margin-bottom: 8px;
-    }
-
-    @media (max-width: 768px) {
-      .projects-grid { grid-template-columns: 1fr; }
-      .project-card.featured { grid-column: span 1; display: block; }
-      .project-card.featured .card-thumb { height: 200px; }
+    .page-hero{padding:160px 0 80px;border-bottom:1px solid var(--border)}
+    .filter-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:48px 0}
+    .filter-chip{font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:9px 20px;border:1px solid var(--border2);border-radius:999px;color:var(--text3);background:transparent;cursor:none;transition:all .3s var(--transition)}
+    .filter-chip:hover{border-color:var(--accent);color:var(--accent)}
+    .filter-chip.active{background:var(--gradient-1);border-color:transparent;color:#fff}
+    .projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+    .project-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius-xl);overflow:hidden;display:block;text-decoration:none;color:var(--text);transition:all .4s var(--transition)}
+    .project-card:hover{border-color:var(--border-hover);transform:translateY(-8px);box-shadow:0 24px 64px rgba(0,0,0,.35)}
+    .card-thumb{height:220px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .card-thumb-emoji{font-size:4rem;z-index:1;position:relative;transition:transform .5s var(--transition)}
+    .project-card:hover .card-thumb-emoji{transform:scale(1.15) rotate(-6deg)}
+    .card-thumb-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(6,6,10,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;z-index:2;transition:opacity .3s var(--transition)}
+    .project-card:hover .card-thumb-overlay{opacity:1}
+    .overlay-link{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:9px 18px;border-radius:999px;text-decoration:none;transition:all .2s}
+    .ol-primary{background:var(--gradient-1);color:#fff}
+    .ol-ghost{border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.8)}
+    .ol-ghost:hover{border-color:var(--accent);color:var(--accent)}
+    .card-body{padding:24px 28px 28px}
+    .card-type{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;background:var(--gradient-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .card-title{font-family:var(--font-display);font-size:1.4rem;font-weight:700;letter-spacing:-.01em;color:#fff;line-height:1.15;margin-bottom:10px}
+    .card-desc{font-size:.82rem;color:var(--text2);line-height:1.7;margin-bottom:16px}
+    .card-tags{display:flex;flex-wrap:wrap;gap:6px}
+    .card-tag{font-family:var(--font-mono);font-size:.65rem;color:var(--text3);padding:4px 10px;background:var(--surface);border:1px solid var(--border2);border-radius:999px;transition:all .2s}
+    .card-tag:hover{border-color:var(--accent);color:var(--accent)}
+    .project-card.featured{grid-column:span 2;display:grid;grid-template-columns:1fr 1fr}
+    .project-card.featured .card-thumb{height:100%;min-height:280px}
+    .projects-count{font-family:var(--font-mono);font-size:.72rem;color:var(--text3);margin-bottom:8px}
+    .cta-center{text-align:center;padding:80px 40px;border:1px solid var(--glass-border);border-radius:var(--radius-xl);background:var(--glass)}
+    @media(max-width:768px){
+      .projects-grid{grid-template-columns:1fr}
+      .project-card.featured{grid-column:span 1;display:block}
+      .project-card.featured .card-thumb{height:200px}
     }
   </style>
 </head>
 <body>
+  <canvas id="particles-canvas"></canvas>
   <div class="cursor-dot" id="cursorDot"></div>
   <div class="cursor-ring" id="cursorRing"></div>
   <div id="page-loader">
@@ -167,209 +61,157 @@
         <li><a href="contact.html">Contact</a></li>
       </ul>
       <a href="mailto:riskyjanuarlbs01@gmail.com" class="nav-cta">Hire Me</a>
-      <button class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></button>
+      <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
     </div>
   </nav>
   <div id="mobile-menu">
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="portfolio.html">Portfolio</a>
-    <a href="contact.html">Contact</a>
+    <a href="index.html">Home</a><a href="about.html">About</a><a href="portfolio.html">Portfolio</a><a href="contact.html">Contact</a>
     <a href="mailto:riskyjanuarlbs01@gmail.com" class="mobile-menu-cta">✉ Hire Me</a>
   </div>
 
-  <!-- PAGE HERO -->
-  <section class="page-hero">
-    <div class="container">
-      <div class="section-label reveal">Selected work</div>
-      <h1 class="display-heading reveal delay-1" style="font-size: clamp(4rem,9vw,7.5rem); margin-top:16px;">
-        PORTFOLIO<span style="color:var(--accent)">.</span>
-      </h1>
-      <p class="reveal delay-2" style="color:var(--text2); font-size:1rem; max-width:520px; line-height:1.8; margin-top:20px;">
-        A collection of projects spanning mobile apps, web interfaces, and UX design —
-        built with care and attention to detail.
-      </p>
-    </div>
-  </section>
-
-  <!-- PROJECTS -->
-  <section style="padding: 60px 0 100px;">
-    <div class="container">
-
-      <!-- Filter -->
-      <div class="filter-bar reveal">
-        <button class="filter-chip active" data-filter="all">All</button>
-        <button class="filter-chip" data-filter="mobile">Mobile</button>
-        <button class="filter-chip" data-filter="web">Web</button>
-        <button class="filter-chip" data-filter="design">UI/UX Design</button>
-      </div>
-
-      <div class="projects-count reveal" id="projects-count">Showing 6 projects</div>
-
-      <div class="projects-grid" id="projects-grid">
-
-        <!-- FEATURED -->
-        <a href="#" class="project-card featured reveal" data-category="mobile">
-          <div class="card-thumb" style="background: linear-gradient(135deg, #1a1a17 0%, #0f1a12 100%);">
-            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%, rgba(126,207,142,.06) 0%, transparent 70%);"></div>
-            <span class="card-thumb-emoji">🛍️</span>
-            <div class="card-thumb-overlay">
-              <a href="#" class="overlay-link ol-primary">View Case Study</a>
-              <a href="#" class="overlay-link ol-ghost">Live Demo</a>
-            </div>
-          </div>
-          <div class="card-body" style="display:flex;flex-direction:column;justify-content:center;padding:40px 40px;">
-            <div class="card-type">Featured · Mobile App</div>
-            <div class="card-title" style="font-size:2rem;">SHOPEASE<br>E-COMMERCE</div>
-            <p class="card-desc" style="max-width:400px;">
-              A full-featured e-commerce mobile app built with Flutter. Clean navigation,
-              smooth animations, and a checkout experience users actually enjoy.
-            </p>
-            <div class="card-tags">
-              <span class="card-tag">Flutter</span>
-              <span class="card-tag">Firebase</span>
-              <span class="card-tag">Figma</span>
-              <span class="card-tag">GetX</span>
-            </div>
-          </div>
-        </a>
-
-        <!-- Card 2 -->
-        <a href="#" class="project-card reveal" data-category="web">
-          <div class="card-thumb" style="background: linear-gradient(135deg, #0d1520 0%, #0a0a08 100%);">
-            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 60% 40%, rgba(59,130,246,.06) 0%, transparent 70%);"></div>
-            <span class="card-thumb-emoji">📊</span>
-            <div class="card-thumb-overlay">
-              <a href="#" class="overlay-link ol-primary">View Project</a>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="card-type">Web App</div>
-            <div class="card-title">ANALYTICS<br>DASHBOARD</div>
-            <p class="card-desc">Real-time analytics dashboard with interactive charts and a clean dark UI.</p>
-            <div class="card-tags">
-              <span class="card-tag">React</span>
-              <span class="card-tag">Next.js</span>
-              <span class="card-tag">Chart.js</span>
-            </div>
-          </div>
-        </a>
-
-        <!-- Card 3 -->
-        <a href="#" class="project-card reveal delay-1" data-category="mobile">
-          <div class="card-thumb" style="background: linear-gradient(135deg, #130d1a 0%, #0a0a08 100%);">
-            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 40% 60%, rgba(168,85,247,.06) 0%, transparent 70%);"></div>
-            <span class="card-thumb-emoji">💪</span>
-            <div class="card-thumb-overlay">
-              <a href="#" class="overlay-link ol-primary">View Project</a>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="card-type">Mobile App</div>
-            <div class="card-title">FITNESS<br>TRACKER</div>
-            <p class="card-desc">Health & workout tracking app with beautiful progress visualization and habit streaks.</p>
-            <div class="card-tags">
-              <span class="card-tag">Flutter</span>
-              <span class="card-tag">SQLite</span>
-              <span class="card-tag">FL Chart</span>
-            </div>
-          </div>
-        </a>
-
-        <!-- Card 4 -->
-        <a href="#" class="project-card reveal" data-category="design">
-          <div class="card-thumb" style="background: linear-gradient(135deg, #1a1208 0%, #0a0a08 100%);">
-            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%, rgba(240,165,0,.06) 0%, transparent 70%);"></div>
-            <span class="card-thumb-emoji">🎨</span>
-            <div class="card-thumb-overlay">
-              <a href="#" class="overlay-link ol-primary">View on Figma</a>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="card-type">UI/UX Design</div>
-            <div class="card-title">BRAND &amp;<br>DESIGN SYSTEM</div>
-            <p class="card-desc">Comprehensive design system with components, tokens, and usage documentation.</p>
-            <div class="card-tags">
-              <span class="card-tag">Figma</span>
-              <span class="card-tag">Design Tokens</span>
-              <span class="card-tag">Components</span>
-            </div>
-          </div>
-        </a>
-
-        <!-- Card 5 -->
-        <a href="#" class="project-card reveal delay-1" data-category="web">
-          <div class="card-thumb" style="background: linear-gradient(135deg, #0d1a18 0%, #0a0a08 100%);">
-            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 40% 50%, rgba(6,182,212,.06) 0%, transparent 70%);"></div>
-            <span class="card-thumb-emoji">🏡</span>
-            <div class="card-thumb-overlay">
-              <a href="#" class="overlay-link ol-primary">View Project</a>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="card-type">Web · UI/UX</div>
-            <div class="card-title">PROPERTY<br>LISTING APP</div>
-            <p class="card-desc">Modern real estate listing with map integration and advanced filter search.</p>
-            <div class="card-tags">
-              <span class="card-tag">Next.js</span>
-              <span class="card-tag">Mapbox</span>
-              <span class="card-tag">Figma</span>
-            </div>
-          </div>
-        </a>
-
-        <!-- Card 6 -->
-        <a href="#" class="project-card reveal delay-2" data-category="mobile">
-          <div class="card-thumb" style="background: linear-gradient(135deg, #1a0d0d 0%, #0a0a08 100%);">
-            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 60% 50%, rgba(239,68,68,.05) 0%, transparent 70%);"></div>
-            <span class="card-thumb-emoji">🍔</span>
-            <div class="card-thumb-overlay">
-              <a href="#" class="overlay-link ol-primary">View Project</a>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="card-type">Mobile App</div>
-            <div class="card-title">FOOD<br>DELIVERY UI</div>
-            <p class="card-desc">Food ordering app UI with smooth micro-animations and a seamless ordering flow.</p>
-            <div class="card-tags">
-              <span class="card-tag">Flutter</span>
-              <span class="card-tag">Lottie</span>
-              <span class="card-tag">BLoC</span>
-            </div>
-          </div>
-        </a>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section style="padding:0 0 100px;">
-    <div class="container">
-      <div class="reveal" style="text-align:center; padding: 80px 40px; border: 1px solid var(--border2); border-radius: var(--radius-lg); background:var(--bg2);">
-        <div class="section-label" style="justify-content:center; margin-bottom:16px;">Ready to build?</div>
-        <h2 class="display-heading" style="font-size:clamp(2.5rem,5vw,4rem);">
-          HAVE A PROJECT<span style="color:var(--accent)">?</span>
-        </h2>
-        <p style="color:var(--text2); margin-top:16px; font-size:.95rem; max-width:400px; margin-left:auto; margin-right:auto; line-height:1.7;">
-          I'm available for freelance work and full-time opportunities.
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <div class="section-label reveal">Selected work</div>
+        <h1 class="display-heading reveal delay-1" style="font-size:clamp(3.5rem,8vw,6rem);margin-top:16px;">
+          Portfolio<span class="gradient-text">.</span>
+        </h1>
+        <p class="reveal delay-2" style="color:var(--text2);font-size:1rem;max-width:520px;line-height:1.8;margin-top:20px;">
+          A collection of projects spanning mobile apps, web interfaces, and UX design —
+          built with care and attention to detail.
         </p>
-        <div style="margin-top:32px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-          <a href="contact.html" class="btn-primary">Get In Touch →</a>
-          <a href="about.html" class="btn-outline">About Me</a>
+      </div>
+    </section>
+
+    <section class="section-padding">
+      <div class="container">
+        <div class="filter-bar reveal">
+          <button class="filter-chip active" data-filter="all">All</button>
+          <button class="filter-chip" data-filter="mobile">Mobile</button>
+          <button class="filter-chip" data-filter="web">Web</button>
+          <button class="filter-chip" data-filter="design">UI/UX Design</button>
+        </div>
+        <div class="projects-count reveal" id="projects-count">Showing 6 projects</div>
+
+        <div class="projects-grid" id="projects-grid">
+          <!-- FEATURED -->
+          <a href="#" class="project-card featured reveal" data-category="mobile">
+            <div class="card-thumb" style="background:linear-gradient(135deg,#0c0c14 0%,#0a1a12 100%);">
+              <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(74,222,128,.06) 0%,transparent 70%);"></div>
+              <span class="card-thumb-emoji">🛍️</span>
+              <div class="card-thumb-overlay">
+                <a href="#" class="overlay-link ol-primary">View Case Study</a>
+                <a href="#" class="overlay-link ol-ghost">Live Demo</a>
+              </div>
+            </div>
+            <div class="card-body" style="display:flex;flex-direction:column;justify-content:center;padding:40px;">
+              <div class="card-type">Featured · Mobile App</div>
+              <div class="card-title" style="font-size:1.8rem;">ShopEase<br>E-Commerce</div>
+              <p class="card-desc" style="max-width:400px;">A full-featured e-commerce mobile app built with Flutter. Clean navigation, smooth animations, and a checkout experience users actually enjoy.</p>
+              <div class="card-tags">
+                <span class="card-tag">Flutter</span><span class="card-tag">Firebase</span><span class="card-tag">Figma</span><span class="card-tag">GetX</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="project-card reveal" data-category="web">
+            <div class="card-thumb" style="background:linear-gradient(135deg,#0d1520 0%,#0c0c14 100%);">
+              <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 60% 40%,rgba(108,99,255,.08) 0%,transparent 70%);"></div>
+              <span class="card-thumb-emoji">📊</span>
+              <div class="card-thumb-overlay"><a href="#" class="overlay-link ol-primary">View Project</a></div>
+            </div>
+            <div class="card-body">
+              <div class="card-type">Web App</div>
+              <div class="card-title">Analytics<br>Dashboard</div>
+              <p class="card-desc">Real-time analytics dashboard with interactive charts and a clean dark UI.</p>
+              <div class="card-tags"><span class="card-tag">React</span><span class="card-tag">Next.js</span><span class="card-tag">Chart.js</span></div>
+            </div>
+          </a>
+
+          <a href="#" class="project-card reveal delay-1" data-category="mobile">
+            <div class="card-thumb" style="background:linear-gradient(135deg,#130d1a 0%,#0c0c14 100%);">
+              <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 40% 60%,rgba(224,64,251,.06) 0%,transparent 70%);"></div>
+              <span class="card-thumb-emoji">💪</span>
+              <div class="card-thumb-overlay"><a href="#" class="overlay-link ol-primary">View Project</a></div>
+            </div>
+            <div class="card-body">
+              <div class="card-type">Mobile App</div>
+              <div class="card-title">Fitness<br>Tracker</div>
+              <p class="card-desc">Health & workout tracking app with beautiful progress visualization and habit streaks.</p>
+              <div class="card-tags"><span class="card-tag">Flutter</span><span class="card-tag">SQLite</span><span class="card-tag">FL Chart</span></div>
+            </div>
+          </a>
+
+          <a href="#" class="project-card reveal" data-category="design">
+            <div class="card-thumb" style="background:linear-gradient(135deg,#1a1208 0%,#0c0c14 100%);">
+              <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(108,99,255,.06) 0%,transparent 70%);"></div>
+              <span class="card-thumb-emoji">🎨</span>
+              <div class="card-thumb-overlay"><a href="#" class="overlay-link ol-primary">View on Figma</a></div>
+            </div>
+            <div class="card-body">
+              <div class="card-type">UI/UX Design</div>
+              <div class="card-title">Brand &amp;<br>Design System</div>
+              <p class="card-desc">Comprehensive design system with components, tokens, and usage documentation.</p>
+              <div class="card-tags"><span class="card-tag">Figma</span><span class="card-tag">Design Tokens</span><span class="card-tag">Components</span></div>
+            </div>
+          </a>
+
+          <a href="#" class="project-card reveal delay-1" data-category="web">
+            <div class="card-thumb" style="background:linear-gradient(135deg,#0d1a18 0%,#0c0c14 100%);">
+              <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 40% 50%,rgba(0,188,212,.06) 0%,transparent 70%);"></div>
+              <span class="card-thumb-emoji">🏡</span>
+              <div class="card-thumb-overlay"><a href="#" class="overlay-link ol-primary">View Project</a></div>
+            </div>
+            <div class="card-body">
+              <div class="card-type">Web · UI/UX</div>
+              <div class="card-title">Property<br>Listing App</div>
+              <p class="card-desc">Modern real estate listing with map integration and advanced filter search.</p>
+              <div class="card-tags"><span class="card-tag">Next.js</span><span class="card-tag">Mapbox</span><span class="card-tag">Figma</span></div>
+            </div>
+          </a>
+
+          <a href="#" class="project-card reveal delay-2" data-category="mobile">
+            <div class="card-thumb" style="background:linear-gradient(135deg,#1a0d0d 0%,#0c0c14 100%);">
+              <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 60% 50%,rgba(255,110,64,.05) 0%,transparent 70%);"></div>
+              <span class="card-thumb-emoji">🍔</span>
+              <div class="card-thumb-overlay"><a href="#" class="overlay-link ol-primary">View Project</a></div>
+            </div>
+            <div class="card-body">
+              <div class="card-type">Mobile App</div>
+              <div class="card-title">Food<br>Delivery UI</div>
+              <p class="card-desc">Food ordering app UI with smooth micro-animations and a seamless ordering flow.</p>
+              <div class="card-tags"><span class="card-tag">Flutter</span><span class="card-tag">Lottie</span><span class="card-tag">BLoC</span></div>
+            </div>
+          </a>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <section class="section-padding" style="padding-top:0;">
+      <div class="container">
+        <div class="cta-center reveal">
+          <div class="section-label" style="justify-content:center;margin-bottom:16px;">Ready to build?</div>
+          <h2 class="display-heading" style="font-size:clamp(2rem,4vw,3.5rem);">
+            Have a project<span class="gradient-text">?</span>
+          </h2>
+          <p style="color:var(--text2);margin-top:16px;font-size:.92rem;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.7;">
+            I'm available for freelance work and full-time opportunities.
+          </p>
+          <div style="margin-top:32px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+            <a href="contact.html" class="btn-primary">Get In Touch →</a>
+            <a href="about.html" class="btn-outline">About Me</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <footer>
     <div class="footer-inner">
       <a href="index.html" class="footer-logo">IKY<span>.</span></a>
       <p class="footer-copy">© 2025 Risky Januar · UI/UX & Mobile Developer</p>
       <div class="social-links">
-        <a href="#" class="social-link">GH</a>
-        <a href="#" class="social-link">IN</a>
-        <a href="#" class="social-link">DR</a>
+        <a href="#" class="social-link">GH</a><a href="#" class="social-link">IN</a><a href="#" class="social-link">DR</a>
         <a href="mailto:riskyjanuarlbs01@gmail.com" class="social-link">✉</a>
       </div>
     </div>
@@ -377,29 +219,23 @@
 
   <script src="js/script.js"></script>
   <script>
-    // Filter functionality
     const chips = document.querySelectorAll('.filter-chip');
     const cards = document.querySelectorAll('.project-card');
     const countEl = document.getElementById('projects-count');
-
     chips.forEach(chip => {
       chip.addEventListener('click', () => {
         chips.forEach(c => c.classList.remove('active'));
         chip.classList.add('active');
-
         const filter = chip.dataset.filter;
         let visible = 0;
-
         cards.forEach(card => {
           const match = filter === 'all' || card.dataset.category === filter;
           card.style.display = match ? '' : 'none';
-          // handle featured spanning
           if (card.classList.contains('featured')) {
             card.style.gridColumn = (match && filter === 'all') ? 'span 2' : 'span 1';
           }
           if (match) visible++;
         });
-
         countEl.textContent = `Showing ${visible} project${visible !== 1 ? 's' : ''}`;
       });
     });
