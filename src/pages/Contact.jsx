@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useReveal } from '../hooks/useReveal'
 
 const css = `
@@ -35,19 +34,19 @@ const css = `
 `
 
 const contacts = [
-  { icon:'✉', label:'Email', value:'riskyjanuarlbs01@gmail.com', href:'mailto:riskyjanuarlbs01@gmail.com' },
-  { icon:'📱', label:'WhatsApp', value:'+62 812 XXXX XXXX', href:'https://wa.me/6281234567890' },
-  { icon:'📍', label:'Location', value:'Indonesia · Remote Available', href:null },
-  { icon:'⏱', label:'Response Time', value:'Usually within 24 hours', href:null },
+  { icon: '✉', label: 'Email', value: 'riskyjanuarlbs01@gmail.com', href: 'mailto:riskyjanuarlbs01@gmail.com' },
+  { icon: '💻', label: 'GitHub', value: 'github.com/RiskyJanuarLbs', href: 'https://github.com/RiskyJanuarLbs' },
+  { icon: '📍', label: 'Location', value: 'Indonesia · Remote Available', href: null },
+  { icon: '⏱', label: 'Response Time', value: 'Usually within 24 hours', href: null },
 ]
 
 const socials = [
-  { icon:'💻', label:'GitHub' }, { icon:'🔗', label:'LinkedIn' },
-  { icon:'🏀', label:'Dribbble' }, { icon:'🐦', label:'Twitter/X' },
+  { icon: '💻', label: 'GitHub', href: 'https://github.com/RiskyJanuarLbs' },
+  { icon: '✉', label: 'Email', href: 'mailto:riskyjanuarlbs01@gmail.com' },
 ]
 
 export default function Contact() {
-  const [form, setForm] = useState({ name:'', email:'', subject:'', budget:'', message:'' })
+  const [form, setForm] = useState({ name: '', email: '', subject: '', budget: '', message: '' })
   const [sending, setSending] = useState(false)
   const [sent, setSent] = useState(false)
   const [toast, setToast] = useState(false)
@@ -59,8 +58,14 @@ export default function Contact() {
     e.preventDefault()
     setSending(true)
     setTimeout(() => {
-      setSending(false); setSent(true); setToast(true)
-      setTimeout(() => { setToast(false); setSent(false); setForm({ name:'', email:'', subject:'', budget:'', message:'' }) }, 4000)
+      setSending(false)
+      setSent(true)
+      setToast(true)
+      setTimeout(() => {
+        setToast(false)
+        setSent(false)
+        setForm({ name: '', email: '', subject: '', budget: '', message: '' })
+      }, 4000)
     }, 1600)
   }
 
@@ -68,12 +73,12 @@ export default function Contact() {
     <>
       <style>{css}</style>
       <section className="contact-hero">
-        <div style={{ maxWidth:1200, margin:'0 auto', padding:'0 40px' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 40px' }}>
           <div className="section-label reveal">Don't be a stranger</div>
-          <h1 className="display-h reveal delay-1" style={{ fontSize:'clamp(4rem,9vw,7.5rem)', marginTop:16 }}>
-            GET IN<br/>TOUCH<span style={{ color:'var(--accent)' }}>.</span>
+          <h1 className="display-h reveal delay-1" style={{ fontSize: 'clamp(4rem,9vw,7.5rem)', marginTop: 16 }}>
+            GET IN<br />TOUCH<span style={{ color: 'var(--accent)' }}>.</span>
           </h1>
-          <p className="reveal delay-2" style={{ color:'var(--text2)', fontSize:'1rem', maxWidth:520, lineHeight:1.8, marginTop:20 }}>
+          <p className="reveal delay-2" style={{ color: 'var(--text2)', fontSize: '1rem', maxWidth: 520, lineHeight: 1.8, marginTop: 20 }}>
             Whether you have a project idea, a job offer, or just want to say hi — my inbox is always open.
           </p>
         </div>
@@ -82,31 +87,31 @@ export default function Contact() {
       <div className="contact-grid">
         {/* LEFT */}
         <div>
-          <div className="section-label reveal" style={{ marginBottom:32 }}>Reach out directly</div>
+          <div className="section-label reveal" style={{ marginBottom: 32 }}>Reach out directly</div>
           {contacts.map((c, i) => (
             <div key={c.label} className={`ci-wrap reveal delay-${i}`}>
               <div className="ci-icon">{c.icon}</div>
               <div>
                 <div className="ci-label">{c.label}</div>
                 {c.href
-                  ? <a href={c.href} className="ci-val">{c.value}</a>
+                  ? <a href={c.href} className="ci-val" target={c.href.startsWith('http') ? '_blank' : undefined} rel={c.href.startsWith('http') ? 'noopener noreferrer' : undefined}>{c.value}</a>
                   : <span className="ci-val">{c.value}</span>
                 }
               </div>
             </div>
           ))}
           <div className="avail-card reveal delay-4">
-            <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:12 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
               <div className="status-badge"><span className="status-dot" />Open to work</div>
             </div>
-            <p style={{ fontSize:'.85rem', color:'var(--text2)', lineHeight:1.7 }}>
-              Currently available for <strong style={{ color:'#fff' }}>freelance projects</strong> and{' '}
-              <strong style={{ color:'#fff' }}>full-time positions</strong>. Let's build something great together.
+            <p style={{ fontSize: '.85rem', color: 'var(--text2)', lineHeight: 1.7 }}>
+              Currently available for <strong style={{ color: '#fff' }}>freelance projects</strong> and{' '}
+              <strong style={{ color: '#fff' }}>full-time positions</strong>. Let's build something great together.
             </p>
           </div>
-          <div style={{ display:'flex', flexWrap:'wrap', gap:12, marginTop:32 }} className="reveal">
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 32 }} className="reveal">
             {socials.map(s => (
-              <a key={s.label} href="#" className="social-card">
+              <a key={s.label} href={s.href} target={s.href.startsWith('http') ? '_blank' : undefined} rel={s.href.startsWith('http') ? 'noopener noreferrer' : undefined} className="social-card">
                 <span>{s.icon}</span>{s.label}
               </a>
             ))}
@@ -115,9 +120,9 @@ export default function Contact() {
 
         {/* RIGHT — Form */}
         <div className="reveal delay-1">
-          <div className="section-label" style={{ marginBottom:32 }}>Send a message</div>
-          <form style={{ display:'flex', flexDirection:'column', gap:20 }} onSubmit={onSubmit}>
-            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16 }}>
+          <div className="section-label" style={{ marginBottom: 32 }}>Send a message</div>
+          <form style={{ display: 'flex', flexDirection: 'column', gap: 20 }} onSubmit={onSubmit}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               <div>
                 <label className="form-label" htmlFor="name">Name</label>
                 <input className="form-input" type="text" id="name" name="name" value={form.name} onChange={onChange} placeholder="Your name" required />
@@ -133,10 +138,10 @@ export default function Contact() {
             </div>
             <div>
               <label className="form-label" htmlFor="budget">Budget Range</label>
-              <select className="form-select" id="budget" name="budget" value={form.budget} onChange={onChange} style={{ background:'var(--bg2)', color: form.budget ? 'var(--text)' : 'var(--text3)' }}>
+              <select className="form-select" id="budget" name="budget" value={form.budget} onChange={onChange} style={{ background: 'var(--bg2)', color: form.budget ? 'var(--text)' : 'var(--text3)' }}>
                 <option value="" disabled>Select budget range</option>
-                {['< $500','$500 – $1,000','$1,000 – $3,000','$3,000+','Let\'s discuss'].map(v => (
-                  <option key={v} value={v} style={{ background:'var(--bg2)' }}>{v}</option>
+                {["< $500", "$500 – $1,000", "$1,000 – $3,000", "$3,000+", "Let's discuss"].map(v => (
+                  <option key={v} value={v} style={{ background: 'var(--bg2)' }}>{v}</option>
                 ))}
               </select>
             </div>
@@ -148,28 +153,28 @@ export default function Contact() {
               {sending ? '⏳ Sending...' : sent ? '✓ Sent!' : 'Send Message →'}
             </button>
           </form>
-          <p style={{ fontSize:'.72rem', color:'var(--text3)', marginTop:16, lineHeight:1.6 }}>
+          <p style={{ fontSize: '.72rem', color: 'var(--text3)', marginTop: 16, lineHeight: 1.6 }}>
             Your message will be sent directly to my email. No spam, no third parties.
           </p>
         </div>
       </div>
 
       {/* Location section */}
-      <section style={{ padding:'80px 0', borderTop:'1px solid var(--border)', marginTop:80 }}>
-        <div style={{ maxWidth:1200, margin:'0 auto', padding:'0 40px' }}>
-          <div className="reveal" style={{ display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:32 }}>
+      <section style={{ padding: '80px 0', borderTop: '1px solid var(--border)', marginTop: 80 }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 40px' }}>
+          <div className="reveal" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 32 }}>
             <div>
-              <div className="section-label" style={{ marginBottom:12 }}>Based in</div>
-              <h2 className="display-h" style={{ fontSize:'clamp(2.5rem,5vw,4.5rem)' }}>
-                INDONESIA<span style={{ color:'var(--accent)' }}>.</span>
+              <div className="section-label" style={{ marginBottom: 12 }}>Based in</div>
+              <h2 className="display-h" style={{ fontSize: 'clamp(2.5rem,5vw,4.5rem)' }}>
+                INDONESIA<span style={{ color: 'var(--accent)' }}>.</span>
               </h2>
-              <p style={{ color:'var(--text2)', fontSize:'.9rem', marginTop:8 }}>Working globally, remotely</p>
+              <p style={{ color: 'var(--text2)', fontSize: '.9rem', marginTop: 8 }}>Working globally, remotely</p>
             </div>
-            <div style={{ display:'flex', gap:16, flexWrap:'wrap' }}>
-              {[['TIMEZONE','WIB (UTC+7)','var(--text)'],['LANGUAGES','ID · EN','var(--text)'],['AVAILABLE','NOW','var(--green)']].map(([label, val, color]) => (
-                <div key={label} style={{ background:'var(--bg2)', border:'1px solid var(--border2)', borderRadius:'var(--radius)', padding:'20px 28px', textAlign:'center' }}>
-                  <div style={{ fontFamily:'var(--font-mono)', fontSize:'.7rem', color:'var(--text3)', marginBottom:4 }}>{label}</div>
-                  <div style={{ fontFamily:'var(--font-display)', fontSize:'1.5rem', color }}>{val}</div>
+            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+              {[['TIMEZONE', 'WIB (UTC+7)', 'var(--text)'], ['LANGUAGES', 'ID · EN', 'var(--text)'], ['AVAILABLE', 'NOW', 'var(--green)']].map(([label, val, color]) => (
+                <div key={label} style={{ background: 'var(--bg2)', border: '1px solid var(--border2)', borderRadius: 'var(--radius)', padding: '20px 28px', textAlign: 'center' }}>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.7rem', color: 'var(--text3)', marginBottom: 4 }}>{label}</div>
+                  <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', color }}>{val}</div>
                 </div>
               ))}
             </div>
@@ -177,7 +182,7 @@ export default function Contact() {
         </div>
       </section>
 
-      <div className={`toast${toast?' show':''}`}>✓ Message sent! I'll get back to you soon.</div>
+      <div className={`toast${toast ? ' show' : ''}`}>✓ Message sent! I'll get back to you soon.</div>
     </>
   )
 }
