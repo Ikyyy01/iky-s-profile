@@ -3,90 +3,126 @@ import { useReveal } from '../hooks/useReveal'
 import { useEffect, useRef } from 'react'
 
 const css = `
-.about-hero{padding:160px 0 80px;border-bottom:1px solid var(--border)}
-.about-hero-grid{max-width:1200px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end}
-.section-label{font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px}
-.section-label::before{content:'';display:block;width:24px;height:1px;background:var(--accent)}
-.display-h{font-family:var(--font-display);line-height:.9;letter-spacing:.02em;color:#fff}
-.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:var(--accent);color:#0a0a08;font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border-radius:var(--radius);transition:background .2s,transform .15s}
-.btn-primary:hover{background:var(--accent2);transform:translateY(-2px)}
-.btn-outline{display:inline-flex;align-items:center;gap:8px;padding:12px 26px;border:1px solid var(--border2);color:var(--text2);font-size:.78rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;border-radius:var(--radius);transition:border-color .2s,color .2s,transform .15s}
-.btn-outline:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
-.timeline-item{display:grid;grid-template-columns:96px 1fr;gap:24px;padding:28px 0;border-bottom:1px solid var(--border)}
-.tl-year{font-family:var(--font-mono);font-size:.72rem;color:var(--accent);padding-top:3px}
-.tl-title{font-weight:600;font-size:1rem;color:#fff;margin-bottom:4px}
-.tl-sub{font-size:.82rem;color:var(--text2)}
-.skill-bar-track{height:2px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:6px}
-.skill-bar-fill{height:100%;background:var(--accent);border-radius:2px;transform:scaleX(0);transform-origin:left;transition:transform 1.2s cubic-bezier(.4,0,.2,1)}
-.stack-pill{font-family:var(--font-mono);font-size:.72rem;color:var(--text2);padding:6px 14px;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);transition:border-color .2s,color .2s;cursor:default}
-.stack-pill:hover{border-color:var(--accent);color:var(--accent)}
-.value-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:32px 24px;transition:border-color .25s}
-.value-card:hover{border-color:var(--border2)}
-.stat-mini{flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:20px 24px}
-.stat-mini-num{font-family:var(--font-display);font-size:2.2rem;color:var(--accent)}
-.stat-mini-label{font-size:.68rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
-.org-item{padding:20px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start}
-.org-role{font-weight:600;font-size:.9rem;color:#fff;margin-bottom:4px}
-.org-event{font-size:.82rem;color:var(--text2)}
-.org-year{font-family:var(--font-mono);font-size:.68rem;color:var(--accent);padding-top:3px;white-space:nowrap}
-@media(max-width:900px){
-  .about-hero-grid{grid-template-columns:1fr;gap:40px}
-  .exp-edu-grid{grid-template-columns:1fr!important}
-  .values-grid{grid-template-columns:1fr 1fr!important}
-  .skills-grid-2{grid-template-columns:1fr!important}
-}
-@media(max-width:600px){
-  .about-hero-grid{padding:0 24px}
-  .values-grid{grid-template-columns:1fr!important}
-}
+  .about-page { color: var(--text); }
+  .about-container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .about-section { padding: 110px 0; }
+  .about-hero { padding-top: 160px; }
+  .about-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 34px; align-items: start; }
+  .section-label { display: inline-flex; align-items: center; gap: 10px; font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  .section-label::before { content: ''; width: 28px; height: 1px; background: currentColor; }
+  .display-h { font-family: var(--font-display); font-weight: 800; line-height: .98; letter-spacing: -.05em; color: var(--text); }
+  .body-copy { font-size: 1rem; line-height: 1.85; color: var(--text2); }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; }
+  .btn-primary, .btn-outline { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 0 22px; border-radius: 999px; text-decoration: none; font-size: .95rem; font-weight: 700; transition: transform .2s, background .2s, border-color .2s, color .2s; }
+  .btn-primary { background: var(--text); color: #fff; }
+  .btn-primary:hover { background: var(--accent); transform: translateY(-2px); }
+  .btn-outline { background: rgba(255,255,255,.7); border: 1px solid var(--border2); color: var(--text); }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  .panel, .value-card, .org-item, .timeline-item, .stat-mini { background: rgba(255,255,255,.8); border: 1px solid rgba(199,210,224,.9); box-shadow: var(--shadow-sm); }
+  .panel { border-radius: 30px; padding: 28px; }
+  .photo-grid { display: grid; grid-template-columns: 1.3fr .7fr; gap: 16px; }
+  .photo-card { height: 360px; border-radius: 22px; overflow: hidden; background: var(--bg3); }
+  .photo-card img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 16px; }
+  .stat-mini { border-radius: 18px; padding: 20px; }
+  .stat-mini-num { font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; letter-spacing: -.04em; color: var(--text); }
+  .stat-mini-label { margin-top: 6px; font-size: .82rem; color: var(--text3); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .timeline-item { border-radius: 22px; padding: 24px; display: grid; grid-template-columns: 110px 1fr; gap: 18px; margin-top: 18px; }
+  .tl-year { font-size: .78rem; font-weight: 700; color: var(--accent); letter-spacing: .04em; }
+  .tl-title { font-size: 1.06rem; font-weight: 700; color: var(--text); }
+  .tl-sub { margin-top: 6px; font-size: .92rem; color: var(--text2); line-height: 1.75; }
+
+  .skills-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 40px; }
+  .skill-box { padding: 24px; border-radius: 24px; background: rgba(255,255,255,.8); border: 1px solid rgba(199,210,224,.9); box-shadow: var(--shadow-sm); }
+  .skill-group { font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+  .skill-bar-track { height: 8px; background: #e2e8f0; border-radius: 999px; overflow: hidden; margin-top: 8px; }
+  .skill-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent) 0%, var(--accent2) 100%); border-radius: 999px; transform: scaleX(0); transform-origin: left; transition: transform 1.2s cubic-bezier(.4,0,.2,1); }
+  .stack-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .stack-pill { font-size: .85rem; font-weight: 600; color: var(--text2); padding: 10px 14px; background: rgba(255,255,255,.75); border: 1px solid rgba(199,210,224,.9); border-radius: 999px; }
+
+  .org-list { margin-top: 36px; display: grid; gap: 16px; }
+  .org-item { border-radius: 22px; padding: 22px 24px; display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; }
+  .org-role { font-size: 1rem; font-weight: 700; color: var(--text); }
+  .org-event { margin-top: 6px; font-size: .92rem; color: var(--text2); }
+  .org-year { font-size: .82rem; font-weight: 700; color: var(--accent); }
+
+  .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 40px; }
+  .value-card { border-radius: 26px; padding: 28px; }
+  .value-icon { font-size: 1.4rem; color: var(--accent); }
+  .value-title { margin-top: 14px; font-family: var(--font-display); font-size: 1.25rem; font-weight: 800; letter-spacing: -.03em; }
+  .value-desc { margin-top: 12px; font-size: .95rem; line-height: 1.8; color: var(--text2); }
+
+  .cta-panel { border-radius: 32px; padding: 48px; background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); color: #fff; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; box-shadow: var(--shadow-md); }
+  .cta-panel .display-h { color: #fff; }
+
+  @media (max-width: 980px) {
+    .about-grid, .two-col, .skills-grid-2, .values-grid, .stats-row, .photo-grid { grid-template-columns: 1fr; }
+    .timeline-item, .org-item { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    .about-container { padding: 0 16px; }
+    .about-section { padding: 80px 0; }
+    .about-hero { padding-top: 128px; }
+    .panel, .value-card, .cta-panel { padding: 22px; }
+  }
 `
 
 const skills = [
-  { group:'Frontend', items:[['React / Vue.js / Next.js','.88'],['HTML5 · CSS3 · Tailwind','.92'],['TypeScript / JavaScript','.85']] },
-  { group:'Backend', items:[['Laravel / PHP','.87'],['Node.js / Express.js','.78'],['REST API Development','.85']] },
+  { group: 'Frontend', items: [['React / Vue.js / Next.js', '.88'], ['HTML5 · CSS3 · Tailwind', '.92'], ['TypeScript / JavaScript', '.85']] },
+  { group: 'Backend', items: [['Laravel / PHP', '.87'], ['Node.js / Express.js', '.78'], ['REST API Development', '.85']] },
 ]
 
 const stack = [
-  'HTML5','CSS3','JavaScript','TypeScript','React.js','Vue.js','Next.js','Nuxt.js',
-  'Tailwind CSS','Bootstrap','PHP (OOP)','Laravel','Node.js','Express.js',
-  'MySQL','Git','GitHub','Figma','Postman','Vercel'
+  'HTML5', 'CSS3', 'JavaScript', 'TypeScript', 'React.js', 'Vue.js', 'Next.js', 'Nuxt.js',
+  'Tailwind CSS', 'Bootstrap', 'PHP (OOP)', 'Laravel', 'Node.js', 'Express.js',
+  'MySQL', 'Git', 'GitHub', 'Figma', 'Postman', 'Vercel',
 ]
 
 const orgExperience = [
-  { role:'Head of Event Division', event:'SCAM 2025 — BEM FIKTI', year:'2025' },
-  { role:'Head of Equipment Division', event:'SOBER 2025 — BEM FIKTI', year:'2025' },
-  { role:'Person in Charge (PIC)', event:'SEHATI 2025 — BEM FIKTI', year:'2025' },
-  { role:'Head of Public Relations Division', event:'HEROES XI 2025 — BEM FIKTI', year:'2025' },
-  { role:'Public Relations Staff', event:'FIKTI Learning 2025 — BEM FIKTI', year:'2025' },
-  { role:'Event Staff', event:'Study Corporation 2025 — BEM FIKTI', year:'2025' },
-  { role:'Security Staff', event:'PKKMB BEM FIKTI 2024', year:'2024' },
-  { role:'Event Staff', event:'HEROES X 2024 — BEM FIKTI', year:'2024' },
+  { role: 'Head of Event Division', event: 'SCAM 2025 — BEM FIKTI', year: '2025' },
+  { role: 'Head of Equipment Division', event: 'SOBER 2025 — BEM FIKTI', year: '2025' },
+  { role: 'Person in Charge (PIC)', event: 'SEHATI 2025 — BEM FIKTI', year: '2025' },
+  { role: 'Head of Public Relations Division', event: 'HEROES XI 2025 — BEM FIKTI', year: '2025' },
+  { role: 'Public Relations Staff', event: 'FIKTI Learning 2025 — BEM FIKTI', year: '2025' },
+  { role: 'Event Staff', event: 'Study Corporation 2025 — BEM FIKTI', year: '2025' },
+  { role: 'Security Staff', event: 'PKKMB BEM FIKTI 2024', year: '2024' },
+  { role: 'Event Staff', event: 'HEROES X 2024 — BEM FIKTI', year: '2024' },
 ]
 
 function SkillSection() {
   const ref = useRef(null)
+
   useEffect(() => {
     const bars = ref.current?.querySelectorAll('.skill-bar-fill')
     if (!bars) return
     const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { const w = e.target.dataset.w; e.target.style.transform = `scaleX(${w})`; obs.unobserve(e.target) } })
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const width = entry.target.dataset.w
+          entry.target.style.transform = `scaleX(${width})`
+          obs.unobserve(entry.target)
+        }
+      })
     }, { threshold: 0.3 })
-    bars.forEach(b => obs.observe(b))
+    bars.forEach(bar => obs.observe(bar))
     return () => obs.disconnect()
   }, [])
 
   return (
-    <div ref={ref} style={{ display:'grid', gridTemplateColumns:'repeat(2,1fr)', gap:32 }} className="skills-grid-2">
-      {skills.map(sg => (
-        <div key={sg.group} className="reveal">
-          <div style={{ fontSize:'.65rem', fontWeight:700, letterSpacing:'.15em', textTransform:'uppercase', color:'var(--text3)', marginBottom:16 }}>{sg.group}</div>
-          {sg.items.map(([name, w]) => (
-            <div key={name} style={{ marginBottom:14 }}>
-              <div style={{ display:'flex', justifyContent:'space-between', marginBottom:6 }}>
-                <span style={{ fontSize:'.82rem', color:'var(--text)' }}>{name}</span>
-                <span style={{ fontFamily:'var(--font-mono)', fontSize:'.68rem', color:'var(--text3)' }}>{Math.round(parseFloat(w)*100)}%</span>
+    <div ref={ref} className="skills-grid-2">
+      {skills.map(group => (
+        <div key={group.group} className="skill-box reveal">
+          <div className="skill-group">{group.group}</div>
+          {group.items.map(([name, width]) => (
+            <div key={name} style={{ marginBottom: 18 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, marginBottom: 6 }}>
+                <span style={{ fontSize: '.92rem', color: 'var(--text)' }}>{name}</span>
+                <span style={{ fontSize: '.82rem', color: 'var(--text3)' }}>{Math.round(parseFloat(width) * 100)}%</span>
               </div>
-              <div className="skill-bar-track"><div className="skill-bar-fill" data-w={w} /></div>
+              <div className="skill-bar-track"><div className="skill-bar-fill" data-w={width} /></div>
             </div>
           ))}
         </div>
@@ -97,40 +133,45 @@ function SkillSection() {
 
 export default function About() {
   useReveal()
+
   return (
-    <>
+    <div className="about-page">
       <style>{css}</style>
-      <section className="about-hero">
-        <div className="about-hero-grid">
+
+      <section className="about-section about-hero">
+        <div className="about-container about-grid">
           <div>
-            <div className="section-label reveal">The person behind the code</div>
-            <h1 className="display-h reveal delay-1" style={{ fontSize:'clamp(4rem,9vw,7.5rem)', marginTop:16 }}>
-              ABOUT<br/>ME<span style={{ color:'var(--accent)' }}>.</span>
+            <div className="section-label reveal">About</div>
+            <h1 className="display-h reveal delay-1" style={{ fontSize: 'clamp(3rem, 7vw, 5.6rem)', marginTop: 18 }}>
+              Professional, adaptable,
+              <br />
+              and focused on quality.
             </h1>
-            <p className="reveal delay-2" style={{ color:'var(--text2)', fontSize:'1rem', lineHeight:1.8, maxWidth:480, marginTop:24 }}>
-              Hey — I'm <strong style={{ color:'#fff' }}>Muhammad Risky Januar Lubis</strong>, an Information Systems student at Universitas Gunadarma with a strong interest in full-stack web development, software engineering, and backend systems.
+            <p className="body-copy reveal delay-2" style={{ marginTop: 24, maxWidth: 620 }}>
+              I'm Muhammad Risky Januar Lubis, an Information Systems student at Universitas Gunadarma with a strong focus on fullstack web development, software engineering, and backend systems.
             </p>
-            <p className="reveal delay-2" style={{ color:'var(--text2)', fontSize:'1rem', lineHeight:1.8, maxWidth:480, marginTop:16 }}>
-              Experienced in building web applications using modern technologies including Laravel, Vue.js, React, PHP, JavaScript, and MySQL. Passionate about learning new technologies and contributing to real-world digital solutions.
+            <p className="body-copy reveal delay-2" style={{ marginTop: 16, maxWidth: 620 }}>
+              I enjoy building web products that look refined, feel intuitive, and remain maintainable as they grow. My toolkit includes Laravel, React, Vue.js, JavaScript, PHP, and MySQL.
             </p>
-            <div className="reveal delay-3" style={{ marginTop:32, display:'flex', gap:12, flexWrap:'wrap' }}>
-              <Link to="/contact" className="btn-primary">Get In Touch →</Link>
-              <a href="mailto:riskyjanuarlbs01@gmail.com" className="btn-outline">Email Me</a>
+            <div className="btn-row reveal delay-3">
+              <Link to="/contact" className="btn-primary">Get In Touch</Link>
+              <a href="mailto:riskyjanuarlbs01@gmail.com" className="btn-outline">Send Email</a>
             </div>
           </div>
-          <div className="reveal-right">
-            <div style={{ display:'grid', gridTemplateColumns:'2fr 1fr', gap:16 }}>
-              {['IMG_5199.jpg','Screenshot_20260323_191003_WhatsApp.jpg'].map((img, i) => (
-                <div key={i} style={{ height:360, borderRadius:'var(--radius-lg)', overflow:'hidden', border:'1px solid var(--border2)' }}>
-                  <img src={`/photo/${img}`} alt="Risky Januar" style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'top', filter:'grayscale(15%)', display:'block' }} />
+
+          <div className="panel reveal-right">
+            <div className="photo-grid">
+              {['Gemini_Generated_Image_9pq8wq9pq8wq9pq8.png'].map(img => (
+                <div key={img} className="photo-card">
+                  <img src={`/photo/${img}`} alt="Risky Januar" />
                 </div>
               ))}
             </div>
-            <div style={{ marginTop:16, display:'flex', gap:12 }}>
-              {[['2+','Projects'],['6+','Tech Stack'],['2023','Started']].map(([n,l]) => (
-                <div key={l} className="stat-mini">
-                  <div className="stat-mini-num">{n}</div>
-                  <div className="stat-mini-label">{l}</div>
+            <div className="stats-row">
+              {[['2+', 'Projects'], ['6+', 'Core Stack'], ['2023', 'Started']].map(([value, label]) => (
+                <div key={label} className="stat-mini">
+                  <div className="stat-mini-num">{value}</div>
+                  <div className="stat-mini-label">{label}</div>
                 </div>
               ))}
             </div>
@@ -138,114 +179,107 @@ export default function About() {
         </div>
       </section>
 
-      {/* EDUCATION */}
-      <section style={{ padding:'100px 0' }}>
-        <div style={{ maxWidth:1200, margin:'0 auto', padding:'0 40px' }}>
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:80 }} className="exp-edu-grid">
-            <div>
-              <div className="section-label reveal">Background</div>
-              <h2 className="display-h reveal delay-1" style={{ fontSize:'clamp(2rem,4vw,3.5rem)', marginTop:12, marginBottom:8 }}>EDUCATION</h2>
-              <div className="timeline-item reveal delay-1">
-                <div className="tl-year">2023 —</div>
-                <div>
-                  <div className="tl-title">Bachelor of Information Systems</div>
-                  <div className="tl-sub">Universitas Gunadarma</div>
-                  <div className="tl-sub" style={{ marginTop:8, fontSize:'.78rem', color:'var(--text3)' }}>
-                    Relevant: Database Systems · Programming Fundamentals · Information Systems Development · Data Processing · Software Engineering
-                  </div>
-                </div>
+      <section className="about-section" style={{ paddingTop: 0 }}>
+        <div className="about-container two-col">
+          <div className="reveal">
+            <div className="section-label">Education</div>
+            <h2 className="display-h" style={{ fontSize: 'clamp(2.2rem, 5vw, 4rem)', marginTop: 16 }}>Academic background</h2>
+            <div className="timeline-item">
+              <div className="tl-year">2023 — Present</div>
+              <div>
+                <div className="tl-title">Bachelor of Information Systems</div>
+                <div className="tl-sub">Universitas Gunadarma</div>
+                <div className="tl-sub">Relevant focus: Database Systems, Programming Fundamentals, Information Systems Development, Data Processing, and Software Engineering.</div>
               </div>
             </div>
+          </div>
 
-            <div>
-              <div className="section-label reveal">Languages</div>
-              <h2 className="display-h reveal delay-1" style={{ fontSize:'clamp(2rem,4vw,3.5rem)', marginTop:12, marginBottom:8 }}>LANGUAGE</h2>
-              {[
-                { year:'Native', title:'Indonesian', sub:'Bahasa Indonesia — Mother tongue' },
-                { year:'Intermediate', title:'English', sub:'Reading, writing, and communication' },
-              ].map((item, i) => (
-                <div key={item.title} className={`timeline-item reveal delay-${i+1}`}>
-                  <div className="tl-year">{item.year}</div>
-                  <div><div className="tl-title">{item.title}</div><div className="tl-sub">{item.sub}</div></div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SKILLS */}
-      <section style={{ padding:'0 0 100px', borderTop:'1px solid var(--border)' }}>
-        <div style={{ maxWidth:1200, margin:'0 auto', padding:'100px 40px 0' }}>
-          <div className="reveal">
-            <div className="section-label">Capabilities</div>
-            <h2 className="display-h" style={{ fontSize:'clamp(2.5rem,5vw,4.5rem)', marginTop:12 }}>SKILLS &amp; STACK</h2>
-          </div>
-          <div style={{ marginTop:48 }}>
-            <SkillSection />
-          </div>
-          <div style={{ display:'flex', flexWrap:'wrap', gap:8, marginTop:32 }} className="reveal delay-2">
-            {stack.map(s => <span key={s} className="stack-pill">{s}</span>)}
-          </div>
-        </div>
-      </section>
-
-      {/* ORGANIZATIONAL EXPERIENCE */}
-      <section style={{ padding:'0 0 100px' }}>
-        <div style={{ maxWidth:1200, margin:'0 auto', padding:'0 40px' }}>
-          <div className="reveal">
-            <div className="section-label">Student Executive Board</div>
-            <h2 className="display-h" style={{ fontSize:'clamp(2.5rem,5vw,4.5rem)', marginTop:12 }}>ORGANIZATIONAL<br/>EXPERIENCE</h2>
-            <p style={{ color:'var(--text2)', fontSize:'.9rem', marginTop:12 }}>BEM FIKTI — Universitas Gunadarma</p>
-          </div>
-          <div style={{ marginTop:40 }}>
-            {orgExperience.map((o, i) => (
-              <div key={i} className={`org-item reveal delay-${i % 3}`}>
-                <div>
-                  <div className="org-role">{o.role}</div>
-                  <div className="org-event">{o.event}</div>
-                </div>
-                <div className="org-year">{o.year}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* VALUES */}
-      <section style={{ padding:'0 0 100px' }}>
-        <div style={{ maxWidth:1200, margin:'0 auto', padding:'0 40px' }}>
-          <div className="reveal">
-            <div className="section-label">What drives me</div>
-            <h2 className="display-h" style={{ fontSize:'clamp(2.5rem,5vw,4.5rem)', marginTop:12 }}>MY VALUES</h2>
-          </div>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:24, marginTop:48 }} className="values-grid">
+          <div className="reveal delay-1">
+            <div className="section-label">Languages</div>
+            <h2 className="display-h" style={{ fontSize: 'clamp(2.2rem, 5vw, 4rem)', marginTop: 16 }}>Communication</h2>
             {[
-              { icon:'◈', title:'CRAFT', desc:'Every line of code matters. I build clean, maintainable applications with attention to structure and scalability.' },
-              { icon:'✦', title:'LEARNING', desc:'Technology evolves fast. I stay curious, continuously expanding my knowledge of modern web technologies.' },
-              { icon:'◎', title:'IMPACT', desc:'I care about building real digital solutions that solve actual problems and create value for users.' },
-            ].map((v, i) => (
-              <div key={v.title} className={`value-card reveal delay-${i}`}>
-                <div style={{ fontSize:'1.5rem', marginBottom:12 }}>{v.icon}</div>
-                <div style={{ fontFamily:'var(--font-display)', fontSize:'1.25rem', letterSpacing:'.03em', color:'#fff', marginBottom:8 }}>{v.title}</div>
-                <p style={{ fontSize:'.82rem', color:'var(--text2)', lineHeight:1.7 }}>{v.desc}</p>
+              { year: 'Native', title: 'Indonesian', sub: 'Bahasa Indonesia — Mother tongue' },
+              { year: 'Intermediate', title: 'English', sub: 'Reading, writing, and communication' },
+            ].map(item => (
+              <div key={item.title} className="timeline-item">
+                <div className="tl-year">{item.year}</div>
+                <div>
+                  <div className="tl-title">{item.title}</div>
+                  <div className="tl-sub">{item.sub}</div>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section style={{ padding:'0 0 100px' }}>
-        <div style={{ maxWidth:1200, margin:'0 auto', padding:'0 40px' }}>
-          <div className="reveal" style={{ background:'var(--bg3)', border:'1px solid var(--border2)', borderRadius:'var(--radius-lg)', padding:'64px 56px', display:'flex', alignItems:'center', justifyContent:'space-between', gap:32, flexWrap:'wrap' }}>
-            <h2 className="display-h" style={{ fontSize:'clamp(2rem,4vw,3.5rem)' }}>
-              LET'S WORK<br/>TOGETHER<span style={{ color:'var(--accent)' }}>.</span>
-            </h2>
-            <Link to="/contact" className="btn-primary">Start a Project →</Link>
+      <section className="about-section" style={{ paddingTop: 0 }}>
+        <div className="about-container">
+          <div className="reveal">
+            <div className="section-label">Skills</div>
+            <h2 className="display-h" style={{ fontSize: 'clamp(2.2rem, 5vw, 4rem)', marginTop: 16 }}>Capabilities & stack</h2>
+          </div>
+          <SkillSection />
+          <div className="stack-list reveal delay-2">
+            {stack.map(item => <span key={item} className="stack-pill">{item}</span>)}
           </div>
         </div>
       </section>
-    </>
+
+      <section className="about-section" style={{ paddingTop: 0 }}>
+        <div className="about-container">
+          <div className="reveal">
+            <div className="section-label">Experience</div>
+            <h2 className="display-h" style={{ fontSize: 'clamp(2.2rem, 5vw, 4rem)', marginTop: 16 }}>Organizational roles</h2>
+            <p className="body-copy" style={{ marginTop: 18, maxWidth: 620 }}>Student Executive Board experience at BEM FIKTI, Universitas Gunadarma.</p>
+          </div>
+          <div className="org-list">
+            {orgExperience.map((item, index) => (
+              <div key={`${item.role}-${index}`} className={`org-item reveal delay-${index % 3}`}>
+                <div>
+                  <div className="org-role">{item.role}</div>
+                  <div className="org-event">{item.event}</div>
+                </div>
+                <div className="org-year">{item.year}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="about-section" style={{ paddingTop: 0 }}>
+        <div className="about-container">
+          <div className="reveal">
+            <div className="section-label">Values</div>
+            <h2 className="display-h" style={{ fontSize: 'clamp(2.2rem, 5vw, 4rem)', marginTop: 16 }}>How I approach my work</h2>
+          </div>
+          <div className="values-grid">
+            {[
+              { icon: '01', title: 'Craft', desc: 'I value clear structure, thoughtful details, and maintainable code that supports product growth.' },
+              { icon: '02', title: 'Learning', desc: 'I stay adaptable, continuously improving my technical understanding and design sensitivity.' },
+              { icon: '03', title: 'Impact', desc: 'I aim to create practical digital solutions that solve real needs and elevate the user experience.' },
+            ].map((value, index) => (
+              <div key={value.title} className={`value-card reveal delay-${index}`}>
+                <div className="value-icon">{value.icon}</div>
+                <div className="value-title">{value.title}</div>
+                <p className="value-desc">{value.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="about-section" style={{ paddingTop: 0 }}>
+        <div className="about-container">
+          <div className="cta-panel reveal">
+            <div>
+              <div className="section-label" style={{ color: 'rgba(255,255,255,.72)' }}>Collaboration</div>
+              <h2 className="display-h" style={{ fontSize: 'clamp(2rem, 4vw, 3.4rem)', marginTop: 16 }}>Let's build something strong together.</h2>
+            </div>
+            <Link to="/contact" className="btn-primary">Start a Project</Link>
+          </div>
+        </div>
+      </section>
+    </div>
   )
 }

@@ -3,38 +3,56 @@ import { Link } from 'react-router-dom'
 import { useReveal } from '../hooks/useReveal'
 
 const css = `
-.port-hero{padding:160px 0 80px;border-bottom:1px solid var(--border)}
-.section-label{font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px}
-.section-label::before{content:'';display:block;width:24px;height:1px;background:var(--accent)}
-.display-h{font-family:var(--font-display);line-height:.9;letter-spacing:.02em;color:#fff}
-.filter-chip{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:8px 18px;border:1px solid var(--border2);border-radius:var(--radius);color:var(--text3);background:transparent;cursor:none;transition:all .2s}
-.filter-chip:hover{border-color:var(--accent);color:var(--accent)}
-.filter-chip.active{background:var(--accent);border-color:var(--accent);color:#0a0a08}
-.proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
-.proj-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;display:block;text-decoration:none;color:var(--text);transition:border-color .25s,transform .3s cubic-bezier(.34,1.2,.64,1)}
-.proj-card:hover{border-color:var(--border2);transform:translateY(-6px)}
-.proj-card.featured{grid-column:span 2;display:grid;grid-template-columns:1fr 1fr}
-.card-thumb{height:220px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
-.card-thumb-emoji{font-size:4rem;z-index:1;position:relative;transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
-.proj-card:hover .card-thumb-emoji{transform:scale(1.2) rotate(-6deg)}
-.card-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(10,10,8,.7);backdrop-filter:blur(6px);opacity:0;z-index:2;transition:opacity .25s}
-.proj-card:hover .card-overlay{opacity:1}
-.ol-btn{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:8px 16px;border-radius:var(--radius);text-decoration:none;transition:background .2s;cursor:none}
-.ol-primary{background:var(--accent);color:#0a0a08}
-.ol-ghost{border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.8)}
-.card-body{padding:24px 28px 28px}
-.card-type{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
-.card-title{font-family:var(--font-display);font-size:1.4rem;letter-spacing:.02em;color:#fff;line-height:1.1;margin-bottom:10px}
-.card-desc{font-size:.82rem;color:var(--text2);line-height:1.7;margin-bottom:16px}
-.card-tags{display:flex;flex-wrap:wrap;gap:6px}
-.card-tag{font-family:var(--font-mono);font-size:.65rem;color:var(--text3);padding:3px 9px;background:var(--surface);border:1px solid var(--border2);border-radius:3px}
-.btn-outline{display:inline-flex;align-items:center;gap:8px;padding:12px 26px;border:1px solid var(--border2);color:var(--text2);font-size:.78rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;border-radius:var(--radius);transition:border-color .2s,color .2s}
-.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
-.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:var(--accent);color:#0a0a08;font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border-radius:var(--radius);transition:background .2s}
-.btn-primary:hover{background:var(--accent2)}
-.wip-badge{display:inline-flex;align-items:center;gap:6px;font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);background:rgba(240,165,0,.1);border:1px solid rgba(240,165,0,.25);padding:3px 10px;border-radius:999px;margin-left:10px;vertical-align:middle}
-@media(max-width:768px){.proj-grid{grid-template-columns:1fr}.proj-card.featured{grid-column:span 1;display:block}.proj-card.featured .card-thumb{height:200px}}
-@media(max-width:600px){.port-hero{padding-left:24px;padding-right:24px}}
+  .portfolio-page { color: var(--text); }
+  .portfolio-container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .portfolio-section { padding: 110px 0; }
+  .portfolio-hero { padding-top: 160px; }
+  .section-label { display: inline-flex; align-items: center; gap: 10px; font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  .section-label::before { content: ''; width: 28px; height: 1px; background: currentColor; }
+  .display-h { font-family: var(--font-display); font-weight: 800; line-height: .98; letter-spacing: -.05em; color: var(--text); }
+  .body-copy { font-size: 1rem; line-height: 1.85; color: var(--text2); }
+  .filter-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
+  .filter-chip { padding: 11px 16px; border: 1px solid var(--border2); border-radius: 999px; background: rgba(255,255,255,.72); color: var(--text2); font-size: .84rem; font-weight: 700; transition: border-color .2s, background .2s, color .2s; }
+  .filter-chip:hover, .filter-chip.active { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); }
+
+  .proj-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 28px; }
+  .proj-card { background: rgba(255,255,255,.82); border: 1px solid rgba(199,210,224,.9); border-radius: 28px; overflow: hidden; box-shadow: var(--shadow-sm); transition: transform .2s, box-shadow .2s, border-color .2s; }
+  .proj-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); border-color: rgba(37,99,235,.2); }
+  .proj-card.featured { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; }
+  .card-thumb { min-height: 260px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .card-thumb-emoji { font-size: 4rem; position: relative; z-index: 1; }
+  .card-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 12px; background: rgba(15,23,42,.2); opacity: 0; transition: opacity .25s; }
+  .proj-card:hover .card-overlay { opacity: 1; }
+  .ol-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 18px; border-radius: 999px; text-decoration: none; font-size: .84rem; font-weight: 700; transition: transform .2s, background .2s, border-color .2s; }
+  .ol-primary { background: #fff; color: var(--text); }
+  .ol-ghost { border: 1px solid rgba(255,255,255,.45); color: #fff; }
+  .ol-btn:hover { transform: translateY(-2px); }
+  .card-body { padding: 30px; }
+  .card-type { font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  .card-title { margin-top: 14px; font-family: var(--font-display); font-size: 1.7rem; font-weight: 800; letter-spacing: -.04em; line-height: 1.05; color: var(--text); }
+  .card-desc { margin-top: 14px; font-size: .96rem; line-height: 1.8; color: var(--text2); }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .card-tag { padding: 8px 12px; border-radius: 999px; background: var(--bg3); color: var(--text2); font-size: .82rem; font-weight: 600; }
+  .card-link { display: inline-flex; margin-top: 18px; color: var(--accent); font-size: .9rem; font-weight: 700; text-decoration: none; }
+  .wip-badge { display: inline-flex; align-items: center; gap: 6px; margin-left: 10px; padding: 6px 10px; border-radius: 999px; background: rgba(22,163,74,.1); color: var(--green); font-size: .72rem; font-weight: 700; }
+
+  .cta-box { margin-top: 56px; padding: 52px; text-align: center; border-radius: 32px; background: rgba(255,255,255,.82); border: 1px solid rgba(199,210,224,.9); box-shadow: var(--shadow-sm); }
+  .btn-row { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 28px; }
+  .btn-primary, .btn-outline { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 0 22px; border-radius: 999px; text-decoration: none; font-size: .95rem; font-weight: 700; transition: transform .2s, background .2s, border-color .2s, color .2s; }
+  .btn-primary { background: var(--text); color: #fff; }
+  .btn-primary:hover { background: var(--accent); transform: translateY(-2px); }
+  .btn-outline { background: rgba(255,255,255,.7); border: 1px solid var(--border2); color: var(--text); }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  @media (max-width: 900px) {
+    .proj-grid, .proj-card.featured { grid-template-columns: 1fr; display: grid; grid-column: span 1; }
+  }
+  @media (max-width: 640px) {
+    .portfolio-container { padding: 0 16px; }
+    .portfolio-section { padding: 80px 0; }
+    .portfolio-hero { padding-top: 128px; }
+    .card-body, .cta-box { padding: 22px; }
+  }
 `
 
 const projects = [
@@ -44,12 +62,12 @@ const projects = [
     cat: 'web',
     type: 'Featured · Fullstack Web',
     emoji: '🍽️',
-    bg: 'linear-gradient(135deg,#0d1a10,#0a0a08)',
-    glow: 'rgba(126,207,142,.07)',
-    title: 'CATERING\nFAMILY JAKARTA',
-    desc: 'A complete catering management web application for a Jakarta-based catering business. Features include menu management, order tracking, customer management, and an admin dashboard — built with Laravel backend and Vue.js frontend.',
+    bg: 'linear-gradient(135deg,#dbeafe,#eff6ff)',
+    glow: 'rgba(37,99,235,.18)',
+    title: 'Catering Family Jakarta',
+    desc: 'A complete catering management web application for a Jakarta-based business with menu management, order tracking, customer management, and an admin dashboard.',
     tags: ['Laravel', 'Vue.js', 'REST API', 'MySQL', 'PHP', 'Tailwind CSS'],
-    github: 'https://github.com/RiskyJanuarLbs',
+    github: 'https://github.com/Ikyyy01',
     live: null,
     status: null,
   },
@@ -59,12 +77,12 @@ const projects = [
     cat: 'web',
     type: 'Web App · Game',
     emoji: '🕵️',
-    bg: 'linear-gradient(135deg,#0d1020,#0a0a08)',
-    glow: 'rgba(99,102,241,.07)',
-    title: 'UNDERCOVER\nPARTY GAME',
-    desc: 'A fun multiplayer party game web app inspired by the classic Undercover card game. Players get secret roles and try to find the undercover agent through discussion. Built with React and TypeScript.',
+    bg: 'linear-gradient(135deg,#e2e8f0,#f8fafc)',
+    glow: 'rgba(15,23,42,.12)',
+    title: 'Undercover Party Game',
+    desc: 'A multiplayer party game web app inspired by the Undercover card game, built for playful interaction and smooth browser-based gameplay.',
     tags: ['React', 'TypeScript', 'JavaScript', 'CSS3'],
-    github: 'https://github.com/RiskyJanuarLbs',
+    github: 'https://github.com/Ikyyy01',
     live: null,
     status: null,
   },
@@ -74,11 +92,11 @@ const projects = [
     cat: 'web',
     type: 'Web · Coming Soon',
     emoji: '🚧',
-    bg: 'linear-gradient(135deg,#141008,#0a0a08)',
-    glow: 'rgba(240,165,0,.05)',
-    title: 'NEXT\nPROJECT',
-    desc: 'Something new is in the works. Stay tuned for the next project — currently in planning and development phase.',
-    tags: ['TBD'],
+    bg: 'linear-gradient(135deg,#f8fafc,#eef2f7)',
+    glow: 'rgba(22,163,74,.12)',
+    title: 'Next Project',
+    desc: 'A new project is currently in planning and development, with a focus on another practical digital experience.',
+    tags: ['In Planning'],
     github: null,
     live: null,
     status: 'wip',
@@ -91,97 +109,84 @@ export default function Portfolio() {
   const [active, setActive] = useState('all')
   useReveal()
 
-  const visible = active === 'all' ? projects : projects.filter(p => p.cat === active)
+  const visible = active === 'all' ? projects : projects.filter(project => project.cat === active)
 
   return (
-    <>
+    <div className="portfolio-page">
       <style>{css}</style>
-      <section className="port-hero">
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 40px' }}>
-          <div className="section-label reveal">Selected work</div>
-          <h1 className="display-h reveal delay-1" style={{ fontSize: 'clamp(4rem,9vw,7.5rem)', marginTop: 16 }}>
-            PORTFOLIO<span style={{ color: 'var(--accent)' }}>.</span>
+
+      <section className="portfolio-section portfolio-hero">
+        <div className="portfolio-container">
+          <div className="section-label reveal">Portfolio</div>
+          <h1 className="display-h reveal delay-1" style={{ fontSize: 'clamp(3rem, 7vw, 5.6rem)', marginTop: 18 }}>
+            Selected projects
+            <br />
+            with real execution.
           </h1>
-          <p className="reveal delay-2" style={{ color: 'var(--text2)', fontSize: '1rem', maxWidth: 520, lineHeight: 1.8, marginTop: 20 }}>
-            Projects I've built — spanning fullstack web applications and interactive web experiences. Real work, real code.
+          <p className="body-copy reveal delay-2" style={{ marginTop: 22, maxWidth: 700 }}>
+            A curated selection of work spanning fullstack web applications and interactive browser experiences, built with clarity and maintainability in mind.
           </p>
         </div>
       </section>
 
-      <section style={{ padding: '60px 0 100px' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 40px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 16 }} className="reveal">
-            {filters.map(f => (
-              <button key={f} className={`filter-chip${active === f ? ' active' : ''}`} onClick={() => setActive(f)}>
-                {f === 'all' ? 'All' : f.charAt(0).toUpperCase() + f.slice(1)}
+      <section className="portfolio-section" style={{ paddingTop: 0 }}>
+        <div className="portfolio-container">
+          <div className="filter-row reveal">
+            {filters.map(filter => (
+              <button
+                key={filter}
+                className={`filter-chip${active === filter ? ' active' : ''}`}
+                onClick={() => setActive(filter)}
+              >
+                {filter === 'all' ? 'All Projects' : 'Web'}
               </button>
             ))}
           </div>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '.72rem', color: 'var(--text3)', marginBottom: 24 }} className="reveal">
-            Showing {visible.length} project{visible.length !== 1 ? 's' : ''}
-          </div>
+          <div className="body-copy reveal" style={{ marginTop: 18 }}>Showing {visible.length} project{visible.length !== 1 ? 's' : ''}</div>
+
           <div className="proj-grid">
-            {visible.map((p, i) => (
+            {visible.map((project, index) => (
               <div
-                key={p.id}
-                className={`proj-card reveal delay-${i % 3}${p.featured && active === 'all' ? ' featured' : ''}`}
-                style={{ cursor: 'default' }}
+                key={project.id}
+                className={`proj-card reveal delay-${index % 3}${project.featured && active === 'all' ? ' featured' : ''}`}
               >
-                <div className="card-thumb" style={{ background: p.bg, ...(p.featured && active === 'all' ? { height: '100%', minHeight: 280 } : {}) }}>
-                  <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse at 40% 50%, ${p.glow} 0%, transparent 70%)` }} />
-                  <span className="card-thumb-emoji">{p.emoji}</span>
-                  {(p.github || p.live) && (
+                <div className="card-thumb" style={{ background: project.bg, ...(project.featured && active === 'all' ? { minHeight: 320 } : {}) }}>
+                  <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse at 40% 50%, ${project.glow} 0%, transparent 70%)` }} />
+                  <span className="card-thumb-emoji">{project.emoji}</span>
+                  {(project.github || project.live) && (
                     <div className="card-overlay">
-                      {p.github && (
-                        <a href={p.github} target="_blank" rel="noopener noreferrer" className="ol-btn ol-primary">GitHub ↗</a>
-                      )}
-                      {p.live && (
-                        <a href={p.live} target="_blank" rel="noopener noreferrer" className="ol-btn ol-ghost">Live Demo</a>
-                      )}
+                      {project.github && <a href={project.github} target="_blank" rel="noopener noreferrer" className="ol-btn ol-primary">GitHub</a>}
+                      {project.live && <a href={project.live} target="_blank" rel="noopener noreferrer" className="ol-btn ol-ghost">Live Demo</a>}
                     </div>
                   )}
                 </div>
-                <div className="card-body" style={p.featured && active === 'all' ? { display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '40px 40px' } : {}}>
+                <div className="card-body" style={project.featured && active === 'all' ? { display: 'flex', flexDirection: 'column', justifyContent: 'center' } : {}}>
                   <div className="card-type">
-                    {p.type}
-                    {p.status === 'wip' && <span className="wip-badge">⚡ In Progress</span>}
+                    {project.type}
+                    {project.status === 'wip' && <span className="wip-badge">In Progress</span>}
                   </div>
-                  <div className="card-title" style={p.featured && active === 'all' ? { fontSize: '2rem' } : {}}>
-                    {p.title.split('\n').map((l, j) => <span key={j}>{l}{j === 0 && <br />}</span>)}
-                  </div>
-                  <p className="card-desc" style={p.featured && active === 'all' ? { maxWidth: 400 } : {}}>{p.desc}</p>
-                  <div className="card-tags">{p.tags.map(t => <span key={t} className="card-tag">{t}</span>)}</div>
-                  {p.github && (
-                    <div style={{ marginTop: 16 }}>
-                      <a href={p.github} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'var(--font-mono)', fontSize: '.72rem', color: 'var(--accent)', textDecoration: 'none' }}>
-                        View on GitHub ↗
-                      </a>
-                    </div>
-                  )}
+                  <div className="card-title">{project.title}</div>
+                  <p className="card-desc">{project.desc}</p>
+                  <div className="card-tags">{project.tags.map(tag => <span key={tag} className="card-tag">{tag}</span>)}</div>
+                  {project.github && <a href={project.github} target="_blank" rel="noopener noreferrer" className="card-link">View repository</a>}
                 </div>
               </div>
             ))}
           </div>
-        </div>
-      </section>
 
-      <section style={{ padding: '0 0 100px' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 40px' }}>
-          <div className="reveal" style={{ textAlign: 'center', padding: '80px 40px', border: '1px solid var(--border2)', borderRadius: 'var(--radius-lg)', background: 'var(--bg2)' }}>
-            <div className="section-label" style={{ justifyContent: 'center', marginBottom: 16 }}>Ready to build?</div>
-            <h2 className="display-h" style={{ fontSize: 'clamp(2.5rem,5vw,4rem)' }}>
-              HAVE A PROJECT<span style={{ color: 'var(--accent)' }}>?</span>
-            </h2>
-            <p style={{ color: 'var(--text2)', marginTop: 16, fontSize: '.95rem', maxWidth: 400, margin: '16px auto 0', lineHeight: 1.7 }}>
-              I'm available for freelance work and full-time opportunities.
+          <div className="cta-box reveal">
+            <div className="section-label" style={{ justifyContent: 'center' }}>Collaboration</div>
+            <h2 className="display-h" style={{ fontSize: 'clamp(2rem, 4vw, 3.4rem)', marginTop: 18 }}>Need a project built with care?</h2>
+            <p className="body-copy" style={{ maxWidth: 560, margin: '18px auto 0' }}>
+              I'm open for freelance work and opportunities to build polished web experiences.
             </p>
-            <div style={{ marginTop: 32, display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
-              <Link to="/contact" className="btn-primary">Get In Touch →</Link>
+            <div className="btn-row">
+              <Link to="/contact" className="btn-primary">Get In Touch</Link>
               <Link to="/about" className="btn-outline">About Me</Link>
             </div>
           </div>
         </div>
       </section>
-    </>
+    </div>
   )
 }
