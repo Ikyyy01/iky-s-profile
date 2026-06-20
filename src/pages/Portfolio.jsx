@@ -62,6 +62,7 @@ const projects = [
     cat: 'web',
     type: 'Featured · Fullstack Web',
     emoji: '🍽️',
+    image: '/photo/catering.png',
     bg: 'linear-gradient(135deg,#dbeafe,#eff6ff)',
     glow: 'rgba(37,99,235,.18)',
     title: 'Catering Family Jakarta',
@@ -77,6 +78,7 @@ const projects = [
     cat: 'web',
     type: 'Web App · Game',
     emoji: '🕵️',
+    image: '/photo/undercover.png',
     bg: 'linear-gradient(135deg,#e2e8f0,#f8fafc)',
     glow: 'rgba(15,23,42,.12)',
     title: 'Undercover Party Game',
@@ -151,8 +153,18 @@ export default function Portfolio() {
                 className={`proj-card reveal delay-${index % 3}${project.featured && active === 'all' ? ' featured' : ''}`}
               >
                 <div className="card-thumb" style={{ background: project.bg, ...(project.featured && active === 'all' ? { minHeight: 320 } : {}) }}>
-                  <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse at 40% 50%, ${project.glow} 0%, transparent 70%)` }} />
-                  <span className="card-thumb-emoji">{project.emoji}</span>
+                  {project.image ? (
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  ) : (
+                    <>
+                      <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse at 40% 50%, ${project.glow} 0%, transparent 70%)` }} />
+                      <span className="card-thumb-emoji">{project.emoji}</span>
+                    </>
+                  )}
                   {(project.github || project.live) && (
                     <div className="card-overlay">
                       {project.github && <a href={project.github} target="_blank" rel="noopener noreferrer" className="ol-btn ol-primary">GitHub</a>}

@@ -51,7 +51,7 @@ export default function Navbar() {
       <nav className={`navbar${scrolled ? ' scrolled' : ''}`}>
         <div className="nav-shell">
           <div className="nav-inner">
-            <Link to="/" className="nav-logo">Risky<span>.</span></Link>
+            <Link to="/" className="nav-logo">Risky Januar<span>.</span></Link>
             <ul className="nav-links">
               <li><NavLink to="/" end>Home</NavLink></li>
               <li><NavLink to="/about">About</NavLink></li>
