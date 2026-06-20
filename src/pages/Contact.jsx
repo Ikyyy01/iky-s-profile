@@ -46,6 +46,7 @@ const css = `
   .submit-btn:hover:not(:disabled) { background: var(--accent); transform: translateY(-2px); }
   .submit-btn:disabled { opacity: .75; }
   .fine-print { margin-top: 16px; font-size: .86rem; color: var(--text3); line-height: 1.7; }
+  .form-error { margin-top: 4px; padding: 12px 14px; border-radius: 14px; background: rgba(220,38,38,.08); color: #b91c1c; font-size: .9rem; line-height: 1.6; }
   .toast { position: fixed; right: 24px; bottom: 24px; z-index: 9000; padding: 14px 18px; border-radius: 16px; background: #0f172a; color: #fff; box-shadow: var(--shadow-md); transform: translateY(16px); opacity: 0; transition: transform .3s, opacity .3s; pointer-events: none; }
   .toast.show { transform: translateY(0); opacity: 1; }
   .meta-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 28px; }
@@ -64,11 +65,37 @@ const css = `
   }
 `
 
+const icons = {
+  email: (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4 6h16v12H4z" />
+      <path d="m4 7 8 6 8-6" />
+    </svg>
+  ),
+  github: (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+      <path d="M12 .5a12 12 0 0 0-3.79 23.39c.6.1.82-.26.82-.58v-2.03c-3.34.73-4.04-1.42-4.04-1.42-.55-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.72.08-.72 1.2.09 1.84 1.24 1.84 1.24 1.08 1.83 2.83 1.3 3.52.99.11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.32-5.47-5.9 0-1.3.47-2.36 1.24-3.2-.12-.3-.54-1.52.12-3.16 0 0 1.01-.32 3.3 1.22a11.56 11.56 0 0 1 6 0c2.28-1.54 3.29-1.22 3.29-1.22.66 1.64.24 2.86.12 3.16.77.84 1.24 1.9 1.24 3.2 0 4.59-2.8 5.59-5.48 5.89.43.37.82 1.1.82 2.22v3.29c0 .32.22.69.83.58A12 12 0 0 0 12 .5Z" />
+    </svg>
+  ),
+  location: (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 21s-6-4.35-6-10a6 6 0 1 1 12 0c0 5.65-6 10-6 10Z" />
+      <circle cx="12" cy="11" r="2.5" />
+    </svg>
+  ),
+  time: (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
+    </svg>
+  ),
+}
+
 const contacts = [
-  { icon: '✉', label: 'Email', value: 'riskyjanuarlbs01@gmail.com', href: 'mailto:riskyjanuarlbs01@gmail.com' },
-  { icon: '💻', label: 'GitHub', value: 'github.com/Ikyyy01', href: 'https://github.com/Ikyyy01' },
-  { icon: '📍', label: 'Location', value: 'Indonesia · Remote Available', href: null },
-  { icon: '⏱', label: 'Response Time', value: 'Usually within 24 hours', href: null },
+  { icon: icons.email, label: 'Email', value: 'riskyjanuarlbs01@gmail.com', href: 'mailto:riskyjanuarlbs01@gmail.com' },
+  { icon: icons.github, label: 'GitHub', value: 'github.com/Ikyyy01', href: 'https://github.com/Ikyyy01' },
+  { icon: icons.location, label: 'Location', value: 'Indonesia · Remote Available', href: null },
+  { icon: icons.time, label: 'Response Time', value: 'Usually within 24 hours', href: null },
 ]
 
 const socials = [
@@ -81,23 +108,43 @@ export default function Contact() {
   const [sending, setSending] = useState(false)
   const [sent, setSent] = useState(false)
   const [toast, setToast] = useState(false)
+  const [error, setError] = useState('')
   useReveal()
 
-  const onChange = event => setForm(current => ({ ...current, [event.target.name]: event.target.value }))
+  const onChange = event => {
+    if (error) setError('')
+    setForm(current => ({ ...current, [event.target.name]: event.target.value }))
+  }
 
-  const onSubmit = event => {
+  const onSubmit = async event => {
     event.preventDefault()
     setSending(true)
-    setTimeout(() => {
-      setSending(false)
+    setError('')
+
+    try {
+      const response = await fetch('https://formspree.io/f/xdavqpaw', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(form),
+      })
+
+      if (!response.ok) throw new Error('Failed to send message')
+
       setSent(true)
       setToast(true)
+      setForm({ name: '', email: '', subject: '', budget: '', message: '' })
       setTimeout(() => {
         setToast(false)
         setSent(false)
-        setForm({ name: '', email: '', subject: '', budget: '', message: '' })
       }, 4000)
-    }, 1600)
+    } catch {
+      setError('Failed to send message. Please try again or contact me by email.')
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -200,6 +247,7 @@ export default function Contact() {
               <button type="submit" className="submit-btn" disabled={sending}>
                 {sending ? 'Sending...' : sent ? 'Message Sent' : 'Send Message'}
               </button>
+              {error ? <div className="form-error">{error}</div> : null}
             </form>
             <p className="fine-print">Your message stays private and is intended only for direct communication.</p>
           </div>
