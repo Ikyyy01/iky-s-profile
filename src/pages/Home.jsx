@@ -424,18 +424,20 @@ const css = `
     .work-type { width: fit-content; }
   }
   @media (max-width: 640px) {
-    .home-container { padding: 0 24px; }
+    .home-container { padding: 0 28px; max-width: 100%; }
     .home-section { padding: 60px 0; }
     .hero { min-height: auto; padding: 100px 0 40px; }
     .hero-grid { gap: 24px; }
-    .hero-heading { margin-top: 18px; max-width: 100%; }
-    .hero-title-line { margin-bottom: 8px; }
-    .home-copy-lg { font-size: 1rem; }
+    .hero-heading { margin-top: 20px; max-width: 100%; }
+    .hero-title-line { margin-bottom: 8px; word-spacing: 0.1em; }
+    .home-title { font-size: clamp(1.8rem, 6vw, 2.8rem); line-height: 1.1; }
+    .home-copy-lg { font-size: 0.95rem; line-height: 1.8; }
+    .hero-subtitle { margin-top: 20px; max-width: 100%; }
     .home-actions { gap: 12px; margin-top: 28px; flex-direction: column; }
     .home-btn-primary, .home-btn-secondary { width: 100%; min-height: 48px; padding: 0 20px; font-size: .9rem; }
-    .hero-strip { gap: 12px; margin-top: 28px; grid-template-columns: 1fr; }
+    .hero-strip { gap: 12px; margin-top: 32px; grid-template-columns: 1fr; }
     .hero-chip { padding: 14px 16px; }
-    .hero-meta { gap: 12px; margin-top: 30px; grid-template-columns: 1fr; }
+    .hero-meta { gap: 12px; margin-top: 32px; grid-template-columns: 1fr; }
     .hero-stat { padding: 20px; }
     .service-card, .works-panel, .cta-card { padding: 24px; }
     .floating-card { position: static; margin-top: 14px; }
