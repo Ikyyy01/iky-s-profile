@@ -424,9 +424,16 @@ const css = `
     .work-type { width: fit-content; }
   }
   @media (max-width: 640px) {
-    .home-container { padding: 0 16px; }
-    .home-section { padding: 80px 0; }
-    .hero { min-height: auto; padding: 120px 0 48px; }
+    .home-container { padding: 0 20px; }
+    .home-section { padding: 60px 0; }
+    .hero { min-height: auto; padding: 100px 0 40px; }
+    .hero-heading { margin-top: 18px; }
+    .hero-title-line { margin-bottom: 8px; }
+    .home-actions { gap: 12px; margin-top: 28px; }
+    .home-btn-primary, .home-btn-secondary { min-height: 48px; padding: 0 20px; font-size: .9rem; }
+    .hero-strip { gap: 12px; margin-top: 28px; }
+    .hero-chip { padding: 14px 16px; }
+    .hero-meta { gap: 12px; margin-top: 30px; }
     .service-card, .works-panel, .cta-card, .hero-stat { padding: 22px; }
     .floating-card { position: static; margin-top: 14px; }
     .visual-stage { display: block; }
