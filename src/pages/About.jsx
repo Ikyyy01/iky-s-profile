@@ -2,6 +2,52 @@ import { Link } from 'react-router-dom'
 import { useReveal } from '../hooks/useReveal'
 import { useEffect, useRef } from 'react'
 
+const TechLogos = {
+  HTML5: () => <svg viewBox="0 0 24 24" fill="#E34C26" xmlns="http://www.w3.org/2000/svg"><path d="M3 2h18l-2.7 15.3L12 22l-8.3-4.7L3 2z"/><path fill="#fff" d="M12 19.9v-3.8h5.9l-.4 2.3-5.5 1.5z"/><path fill="#f0db4f" d="M12 12.4h3.3l.3-1.8H12V8.8h6.1l-.1.6-.9 5.1h-5.1v-1.8z"/></svg>,
+  CSS3: () => <svg viewBox="0 0 24 24" fill="#264BDD" xmlns="http://www.w3.org/2000/svg"><path d="M3 2h18l-2.7 15.3L12 22l-8.3-4.7L3 2z"/><path fill="#fff" d="M12 19.9v-3.8h5.9l-.4 2.3-5.5 1.5z"/></svg>,
+  JavaScript: () => <svg viewBox="0 0 24 24" fill="#F7DF1E" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="2" fill="#F7DF1E"/><path d="M6 6h4v12H6V6zm8 0h4v12h-4V6z" fill="#000"/></svg>,
+  TypeScript: () => <svg viewBox="0 0 24 24" fill="#3178C6" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="2" fill="#3178C6"/><path d="M4 4h16v16H4V4z" fill="#3178C6"/><text x="12" y="18" fill="white" fontSize="14" fontWeight="bold" textAnchor="middle">TS</text></svg>,
+  React: () => <svg viewBox="0 0 24 24" fill="#61DAFB" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="2" fill="#61DAFB"/><ellipse cx="12" cy="12" rx="8" ry="3" fill="none" stroke="#61DAFB" strokeWidth="1.5" transform="rotate(0)"/><ellipse cx="12" cy="12" rx="8" ry="3" fill="none" stroke="#61DAFB" strokeWidth="1.5" transform="rotate(60)"/><ellipse cx="12" cy="12" rx="8" ry="3" fill="none" stroke="#61DAFB" strokeWidth="1.5" transform="rotate(120)"/></svg>,
+  Vue: () => <svg viewBox="0 0 24 24" fill="#4FC08D" xmlns="http://www.w3.org/2000/svg"><polygon points="12,2 2,7 2,17 12,22 22,17 22,7" fill="#4FC08D"/><polygon points="12,9 7,14 9,17 12,15 15,17 17,14" fill="#fff"/></svg>,
+  Next: () => <svg viewBox="0 0 24 24" fill="#000" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#000"/><text x="12" y="15" fill="white" fontSize="12" fontWeight="bold" textAnchor="middle">N</text></svg>,
+  Nuxt: () => <svg viewBox="0 0 24 24" fill="#00C58E" xmlns="http://www.w3.org/2000/svg"><polygon points="12,2 4,20 20,20" fill="#00C58E"/></svg>,
+  Tailwind: () => <svg viewBox="0 0 24 24" fill="#06B6D4" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#06B6D4"/><circle cx="8" cy="8" r="3" fill="#fff"/><circle cx="16" cy="16" r="3" fill="#fff" opacity="0.5"/></svg>,
+  Bootstrap: () => <svg viewBox="0 0 24 24" fill="#7952B3" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="2" fill="#7952B3"/><text x="12" y="16" fill="white" fontSize="12" fontWeight="bold" textAnchor="middle">B</text></svg>,
+  PHP: () => <svg viewBox="0 0 24 24" fill="#777BB4" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#777BB4"/><text x="12" y="15" fill="white" fontSize="12" fontWeight="bold" textAnchor="middle">P</text></svg>,
+  Laravel: () => <svg viewBox="0 0 24 24" fill="#FF2D20" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 8v8l10 6 10-6V8L12 2z" fill="#FF2D20"/><path d="M12 10L6 13v4l6 3 6-3v-4l-6-3z" fill="#fff"/></svg>,
+  Node: () => <svg viewBox="0 0 24 24" fill="#68A063" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7v10l10 5 10-5V7L12 2z" fill="#68A063"/><text x="12" y="15" fill="white" fontSize="11" fontWeight="bold" textAnchor="middle">N</text></svg>,
+  Express: () => <svg viewBox="0 0 24 24" fill="#000" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#000"/><text x="12" y="15" fill="white" fontSize="12" fontWeight="bold" textAnchor="middle">E</text></svg>,
+  MySQL: () => <svg viewBox="0 0 24 24" fill="#00758F" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10z" fill="#00758F"/><text x="12" y="15" fill="white" fontSize="11" fontWeight="bold" textAnchor="middle">SQL</text></svg>,
+  Git: () => <svg viewBox="0 0 24 24" fill="#F1502F" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10z" fill="#F1502F"/></svg>,
+  GitHub: () => <svg viewBox="0 0 24 24" fill="#181717" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.5 2 2 6.5 2 12c0 4.4 2.9 8.2 6.8 9.5.5.1.7-.2.7-.5v-1.7c-2.7.6-3.3-1.3-3.3-1.3-.4-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8 0-.6.3-1.1.7-1.4-2.4-.3-4.9-1.2-4.9-5.3 0-1.2.4-2.1 1-2.9-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1 .8-.2 1.6-.3 2.4-.3s1.6.1 2.4.3c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.8 1 1.7 1 2.9 0 4.1-2.5 5-4.9 5.3.4.3.7 1 .7 2v2.8c0 .3.2.6.7.5 3.9-1.3 6.8-5.1 6.8-9.5 0-5.5-4.5-10-10-10z" fill="#181717"/></svg>,
+  Figma: () => <svg viewBox="0 0 24 24" fill="#F24E1E" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#F24E1E"/><text x="12" y="15" fill="white" fontSize="12" fontWeight="bold" textAnchor="middle">F</text></svg>,
+  Postman: () => <svg viewBox="0 0 24 24" fill="#FF6C37" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="4" fill="#FF6C37"/><text x="12" y="16" fill="white" fontSize="11" fontWeight="bold" textAnchor="middle">PM</text></svg>,
+  Vercel: () => <svg viewBox="0 0 24 24" fill="#000" xmlns="http://www.w3.org/2000/svg"><polygon points="12,2 2,22 22,22" fill="#000"/><polygon points="12,8 7,18 17,18" fill="white" opacity="0.8"/></svg>,
+}
+
+const stackWithIcons = [
+  { name: 'HTML5', icon: 'HTML5' },
+  { name: 'CSS3', icon: 'CSS3' },
+  { name: 'JavaScript', icon: 'JavaScript' },
+  { name: 'TypeScript', icon: 'TypeScript' },
+  { name: 'React.js', icon: 'React' },
+  { name: 'Vue.js', icon: 'Vue' },
+  { name: 'Next.js', icon: 'Next' },
+  { name: 'Nuxt.js', icon: 'Nuxt' },
+  { name: 'Tailwind CSS', icon: 'Tailwind' },
+  { name: 'Bootstrap', icon: 'Bootstrap' },
+  { name: 'PHP (OOP)', icon: 'PHP' },
+  { name: 'Laravel', icon: 'Laravel' },
+  { name: 'Node.js', icon: 'Node' },
+  { name: 'Express.js', icon: 'Express' },
+  { name: 'MySQL', icon: 'MySQL' },
+  { name: 'Git', icon: 'Git' },
+  { name: 'GitHub', icon: 'GitHub' },
+  { name: 'Figma', icon: 'Figma' },
+  { name: 'Postman', icon: 'Postman' },
+  { name: 'Vercel', icon: 'Vercel' },
+]
+
 const css = `
   .about-page { color: var(--text); }
   .about-container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
@@ -16,18 +62,53 @@ const css = `
   .btn-primary, .btn-outline { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 0 22px; border-radius: 999px; text-decoration: none; font-size: .95rem; font-weight: 700; transition: transform .2s, background .2s, border-color .2s, color .2s; }
   .btn-primary { background: var(--text); color: #fff; }
   .btn-primary:hover { background: var(--accent); transform: translateY(-2px); }
+  [data-theme="dark"] .btn-primary { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); }
   .btn-outline { background: rgba(255,255,255,.7); border: 1px solid var(--border2); color: var(--text); }
   .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+  [data-theme="dark"] .btn-outline { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.1); }
 
   .panel, .value-card, .org-item, .timeline-item, .stat-mini { background: rgba(255,255,255,.8); border: 1px solid rgba(199,210,224,.9); box-shadow: var(--shadow-sm); }
+  [data-theme="dark"] .panel, [data-theme="dark"] .value-card, [data-theme="dark"] .org-item, [data-theme="dark"] .timeline-item, [data-theme="dark"] .stat-mini { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.08); }
   .panel { border-radius: 30px; padding: 28px; }
-  .photo-grid { display: grid; grid-template-columns: 1.3fr .7fr; gap: 16px; }
-  .photo-card { height: 360px; border-radius: 22px; overflow: hidden; background: var(--bg3); }
-  .photo-card img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .photo-wrap { position: relative; border-radius: 22px; overflow: hidden; }
+  .photo-main { width: 100%; height: 420px; object-fit: cover; object-position: top; display: block; }
+  .photo-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 40%, rgba(7,10,20,.78) 100%);
+  }
+  .photo-badge {
+    position: absolute;
+    bottom: 18px;
+    left: 18px;
+    right: 18px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .photo-badge-info { color: #fff; }
+  .photo-badge-role { font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; opacity: .7; }
+  .photo-badge-name { margin-top: 4px; font-family: var(--font-display); font-size: 1.3rem; font-weight: 800; letter-spacing: -.03em; }
+  .photo-badge-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.14);
+    border: 1px solid rgba(255,255,255,.2);
+    backdrop-filter: blur(12px);
+    color: #fff;
+    font-size: .78rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
   .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 16px; }
-  .stat-mini { border-radius: 18px; padding: 20px; }
+  .stat-mini { border-radius: 18px; padding: 20px; transition: transform .2s; }
+  .stat-mini:hover { transform: translateY(-2px); }
   .stat-mini-num { font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; letter-spacing: -.04em; color: var(--text); }
-  .stat-mini-label { margin-top: 6px; font-size: .82rem; color: var(--text3); }
+  .stat-mini-label { margin-top: 6px; font-size: .82rem; color: var(--text3); line-height: 1.4; }
 
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
   .timeline-item { border-radius: 22px; padding: 24px; display: grid; grid-template-columns: 110px 1fr; gap: 18px; margin-top: 18px; }
@@ -37,11 +118,18 @@ const css = `
 
   .skills-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 40px; }
   .skill-box { padding: 24px; border-radius: 24px; background: rgba(255,255,255,.8); border: 1px solid rgba(199,210,224,.9); box-shadow: var(--shadow-sm); }
+  [data-theme="dark"] .skill-box { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.08); }
   .skill-group { font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
   .skill-bar-track { height: 8px; background: #e2e8f0; border-radius: 999px; overflow: hidden; margin-top: 8px; }
+  [data-theme="dark"] .skill-bar-track { background: rgba(255,255,255,.1); }
   .skill-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent) 0%, var(--accent2) 100%); border-radius: 999px; transform: scaleX(0); transform-origin: left; transition: transform 1.2s cubic-bezier(.4,0,.2,1); }
-  .stack-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
-  .stack-pill { font-size: .85rem; font-weight: 600; color: var(--text2); padding: 10px 14px; background: rgba(255,255,255,.75); border: 1px solid rgba(199,210,224,.9); border-radius: 999px; }
+  .stack-list { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+  .stack-pill { display: inline-flex; align-items: center; gap: 8px; font-size: .85rem; font-weight: 600; color: var(--text2); padding: 10px 14px; background: rgba(255,255,255,.75); border: 1px solid rgba(199,210,224,.9); border-radius: 999px; transition: all .2s; }
+  .stack-pill:hover { transform: translateY(-2px); background: rgba(255,255,255,.9); }
+  .stack-icon { width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .stack-icon svg { width: 100%; height: 100%; }
+  [data-theme="dark"] .stack-pill { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.1); }
+  [data-theme="dark"] .stack-pill:hover { background: rgba(255,255,255,.1); }
 
   .org-list { margin-top: 36px; display: grid; gap: 16px; }
   .org-item { border-radius: 22px; padding: 22px 24px; display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; }
@@ -56,6 +144,7 @@ const css = `
   .value-desc { margin-top: 12px; font-size: .95rem; line-height: 1.8; color: var(--text2); }
 
   .cta-panel { border-radius: 32px; padding: 48px; background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); color: #fff; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; box-shadow: var(--shadow-md); }
+  [data-theme="dark"] .cta-panel { background: linear-gradient(135deg, #0b1120 0%, #172554 60%, #312e81 100%); }
   .cta-panel .display-h { color: #fff; }
 
   @media (max-width: 980px) {
@@ -221,7 +310,15 @@ export default function About() {
           </div>
           <SkillSection />
           <div className="stack-list reveal delay-2">
-            {stack.map(item => <span key={item} className="stack-pill">{item}</span>)}
+            {stackWithIcons.map(item => {
+              const IconComponent = TechLogos[item.icon]
+              return (
+                <span key={item.name} className="stack-pill">
+                  {IconComponent && <div className="stack-icon"><IconComponent /></div>}
+                  {item.name}
+                </span>
+              )
+            })}
           </div>
         </div>
       </section>

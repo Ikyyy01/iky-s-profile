@@ -13,39 +13,160 @@ const css = `
   .body-copy { font-size: 1rem; line-height: 1.85; color: var(--text2); }
   .filter-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
   .filter-chip { padding: 11px 16px; border: 1px solid var(--border2); border-radius: 999px; background: rgba(255,255,255,.72); color: var(--text2); font-size: .84rem; font-weight: 700; transition: border-color .2s, background .2s, color .2s; }
+  [data-theme="dark"] .filter-chip { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.1); }
   .filter-chip:hover, .filter-chip.active { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); }
 
-  .proj-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 28px; }
-  .proj-card { background: rgba(255,255,255,.82); border: 1px solid rgba(199,210,224,.9); border-radius: 28px; overflow: hidden; box-shadow: var(--shadow-sm); transition: transform .2s, box-shadow .2s, border-color .2s; }
+  .proj-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 28px; }
+  .proj-card { 
+    background: rgba(255,255,255,.82); 
+    border: 1px solid rgba(199,210,224,.9); 
+    border-radius: 28px; 
+    overflow: hidden; 
+    box-shadow: var(--shadow-sm); 
+    transition: transform .2s, box-shadow .2s, border-color .2s; 
+    position: relative;
+  }
+  .proj-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 28px;
+    padding: 1.5px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  [data-theme="dark"] .proj-card { background: rgba(20,24,82,.4); border-color: rgba(255,255,255,.05); }
   .proj-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); border-color: rgba(37,99,235,.2); }
-  .proj-card.featured { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; }
-  .card-thumb { min-height: 260px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  .card-thumb-emoji { font-size: 4rem; position: relative; z-index: 1; }
-  .card-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 12px; background: rgba(15,23,42,.2); opacity: 0; transition: opacity .25s; }
+  
+  .proj-card.featured { grid-column: span 2; grid-row: span 2; display: grid; grid-template-columns: 1fr 1fr; }
+  .proj-card.featured .card-thumb { height: 100%; min-height: 380px; }
+  .proj-card.wide { grid-column: span 2; }
+  .proj-card.tall { grid-row: span 2; }
+  
+  .card-thumb { min-height: 240px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; background: linear-gradient(135deg, #070a14 0%, #1e2d5f 100%); }
+  .card-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .card-thumb-emoji { font-size: 4rem; position: relative; z-index: 1; filter: drop-shadow(0 12px 24px rgba(0,0,0,.4)); }
+  .card-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 12px; background: rgba(15,23,42,.6); opacity: 0; transition: opacity .25s; backdrop-filter: blur(4px); z-index: 2; }
   .proj-card:hover .card-overlay { opacity: 1; }
+  
+  .spotlight-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(400px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(96, 165, 250, 0.08), transparent 80%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .proj-card:hover .spotlight-glow { opacity: 1; }
+  [data-theme="dark"] .spotlight-glow {
+    background: radial-gradient(350px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(96, 165, 250, 0.12), transparent 80%);
+  }
+
   .ol-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 18px; border-radius: 999px; text-decoration: none; font-size: .84rem; font-weight: 700; transition: transform .2s, background .2s, border-color .2s; }
   .ol-primary { background: #fff; color: var(--text); }
+  [data-theme="dark"] .ol-primary { background: rgba(255,255,255,.1); color: #fff; }
   .ol-ghost { border: 1px solid rgba(255,255,255,.45); color: #fff; }
   .ol-btn:hover { transform: translateY(-2px); }
-  .card-body { padding: 30px; }
+  .card-body { padding: 30px; position: relative; z-index: 1; }
   .card-type { font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
   .card-title { margin-top: 14px; font-family: var(--font-display); font-size: 1.7rem; font-weight: 800; letter-spacing: -.04em; line-height: 1.05; color: var(--text); }
   .card-desc { margin-top: 14px; font-size: .96rem; line-height: 1.8; color: var(--text2); }
   .card-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
-  .card-tag { padding: 8px 12px; border-radius: 999px; background: var(--bg3); color: var(--text2); font-size: .82rem; font-weight: 600; }
+  .card-tag { padding: 8px 12px; border-radius: 999px; background: var(--bg3); color: var(--text2); font-size: .82rem; font-weight: 600; border: 1px solid var(--border); }
+  [data-theme="dark"] .card-tag { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.08); }
   .card-link { display: inline-flex; margin-top: 18px; color: var(--accent); font-size: .9rem; font-weight: 700; text-decoration: none; }
   .wip-badge { display: inline-flex; align-items: center; gap: 6px; margin-left: 10px; padding: 6px 10px; border-radius: 999px; background: rgba(22,163,74,.1); color: var(--green); font-size: .72rem; font-weight: 700; }
 
   .cta-box { margin-top: 56px; padding: 52px; text-align: center; border-radius: 32px; background: rgba(255,255,255,.82); border: 1px solid rgba(199,210,224,.9); box-shadow: var(--shadow-sm); }
+  [data-theme="dark"] .cta-box { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.08); }
   .btn-row { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 28px; }
   .btn-primary, .btn-outline { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 0 22px; border-radius: 999px; text-decoration: none; font-size: .95rem; font-weight: 700; transition: transform .2s, background .2s, border-color .2s, color .2s; }
   .btn-primary { background: var(--text); color: #fff; }
   .btn-primary:hover { background: var(--accent); transform: translateY(-2px); }
+  [data-theme="dark"] .btn-primary { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); }
   .btn-outline { background: rgba(255,255,255,.7); border: 1px solid var(--border2); color: var(--text); }
+  [data-theme="dark"] .btn-outline { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.1); }
   .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
 
+  .preview-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 900;
+    background: rgba(2, 6, 23, .72);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    animation: slide-in-bottom .25s ease;
+  }
+  .preview-modal {
+    width: min(960px, 100%);
+    max-height: 90vh;
+    overflow: auto;
+    border-radius: 30px;
+    background: rgba(255,255,255,.92);
+    border: 1px solid rgba(199,210,224,.9);
+    box-shadow: var(--shadow-md);
+  }
+  [data-theme="dark"] .preview-modal {
+    background: rgba(15, 23, 42, .92);
+    border-color: rgba(255,255,255,.08);
+  }
+  .preview-media {
+    position: relative;
+    min-height: 360px;
+    background: #070a14;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .preview-media img {
+    width: 100%;
+    height: 100%;
+    min-height: 360px;
+    object-fit: cover;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  .preview-media .card-thumb-emoji {
+    position: relative;
+    z-index: 0;
+  }
+  .preview-body { padding: 28px; }
+  .preview-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .preview-close {
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    border: 1px solid var(--border2);
+    background: rgba(255,255,255,.72);
+    color: var(--text);
+  }
+  [data-theme="dark"] .preview-close {
+    background: rgba(255,255,255,.06);
+    border-color: rgba(255,255,255,.1);
+    color: #fff;
+  }
+  .preview-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+
   @media (max-width: 900px) {
-    .proj-grid, .proj-card.featured { grid-template-columns: 1fr; display: grid; grid-column: span 1; }
+    .proj-grid { grid-template-columns: 1fr; }
+    .proj-card.featured, .proj-card.wide, .proj-card.tall { grid-column: span 1; grid-row: span 1; }
   }
   @media (max-width: 640px) {
     .portfolio-container { padding: 0 16px; }
@@ -109,12 +230,24 @@ const filters = ['all', 'web']
 
 export default function Portfolio() {
   const [active, setActive] = useState('all')
+  const [preview, setPreview] = useState(null)
   useReveal()
 
   const visible = active === 'all' ? projects : projects.filter(project => project.cat === active)
 
+  const handleMouseMove = (e) => {
+    const cards = document.querySelectorAll('.proj-card');
+    for (const card of cards) {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+    }
+  }
+
   return (
-    <div className="portfolio-page">
+    <div className="portfolio-page" onMouseMove={handleMouseMove}>
       <style>{css}</style>
 
       <section className="portfolio-section portfolio-hero">
@@ -150,21 +283,23 @@ export default function Portfolio() {
             {visible.map((project, index) => (
               <div
                 key={project.id}
-                className={`proj-card reveal delay-${index % 3}${project.featured && active === 'all' ? ' featured' : ''}`}
+                className={`proj-card reveal delay-${index % 3}${project.featured && active === 'all' ? ' featured' : ''}${!project.featured && index === 1 ? ' tall' : ''}${!project.featured && index === 2 ? ' wide' : ''}`}
+                onClick={() => setPreview(project)}
+                style={{ cursor: 'none' }}
               >
-                <div className="card-thumb" style={{ background: project.bg, ...(project.featured && active === 'all' ? { minHeight: 320 } : {}) }}>
-                  {project.image ? (
+                <div className="spotlight-glow" />
+                <div className="card-thumb" style={{ background: project.bg }}>
+                  {project.image && (
                     <img
                       src={project.image}
                       alt={project.title}
-                      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+                      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 2 }}
                     />
-                  ) : (
-                    <>
-                      <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse at 40% 50%, ${project.glow} 0%, transparent 70%)` }} />
-                      <span className="card-thumb-emoji">{project.emoji}</span>
-                    </>
                   )}
+                  {!project.image && (
+                    <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse at 40% 50%, ${project.glow} 0%, transparent 70%)`, zIndex: 0 }} />
+                  )}
+                  {!project.image && <span className="card-thumb-emoji">{project.emoji}</span>}
                   {(project.github || project.live) && (
                     <div className="card-overlay">
                       {project.github && <a href={project.github} target="_blank" rel="noopener noreferrer" className="ol-btn ol-primary">GitHub</a>}
@@ -197,6 +332,42 @@ export default function Portfolio() {
               <Link to="/about" className="btn-outline">About Me</Link>
             </div>
           </div>
+
+          {preview && (
+            <div className="preview-backdrop" onClick={() => setPreview(null)}>
+              <div className="preview-modal" onClick={e => e.stopPropagation()}>
+                <div className="preview-media" style={{ background: preview.bg }}>
+                  {preview.image ? (
+                    <img 
+                      src={preview.image} 
+                      alt={preview.title} 
+                      onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block' }}
+                    />
+                  ) : null}
+                  <div style={{ display: preview.image ? 'none' : 'block', position: 'absolute', inset: 0, background: `radial-gradient(ellipse at 40% 50%, ${preview.glow} 0%, transparent 70%)` }} />
+                  <span className="card-thumb-emoji" style={{ display: preview.image ? 'none' : 'block' }}>{preview.emoji}</span>
+                </div>
+                <div className="preview-body">
+                  <div className="preview-top">
+                    <div>
+                      <div className="card-type">
+                        {preview.type}
+                        {preview.status === 'wip' && <span className="wip-badge">In Progress</span>}
+                      </div>
+                      <div className="card-title" style={{ marginTop: 10 }}>{preview.title}</div>
+                    </div>
+                    <button className="preview-close" onClick={() => setPreview(null)} aria-label="Close preview">✕</button>
+                  </div>
+                  <p className="card-desc">{preview.desc}</p>
+                  <div className="card-tags">{preview.tags.map(tag => <span key={tag} className="card-tag">{tag}</span>)}</div>
+                  <div className="preview-actions">
+                    {preview.github && <a href={preview.github} target="_blank" rel="noopener noreferrer" className="ol-btn ol-primary">GitHub</a>}
+                    {preview.live && <a href={preview.live} target="_blank" rel="noopener noreferrer" className="ol-btn ol-ghost" style={{ color: 'var(--text)', borderColor: 'var(--border2)' }}>Live Demo</a>}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </div>

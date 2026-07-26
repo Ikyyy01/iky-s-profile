@@ -12,6 +12,7 @@ const css = `
   .body-copy { font-size: 1rem; line-height: 1.85; color: var(--text2); }
   .contact-grid { display: grid; grid-template-columns: .92fr 1.08fr; gap: 28px; }
   .panel { background: rgba(255,255,255,.82); border: 1px solid rgba(199,210,224,.9); border-radius: 30px; box-shadow: var(--shadow-sm); padding: 30px; }
+  [data-theme="dark"] .panel { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.08); }
   .contact-list { display: grid; gap: 14px; margin-top: 30px; }
   .contact-item { display: flex; gap: 16px; align-items: flex-start; padding: 18px 0; border-bottom: 1px solid var(--border); }
   .contact-item:last-child { border-bottom: none; padding-bottom: 0; }
@@ -23,7 +24,9 @@ const css = `
   .status-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: rgba(22,163,74,.1); color: var(--green); font-size: .8rem; font-weight: 700; }
   .status-dot { width: 8px; height: 8px; border-radius: 999px; background: var(--green); animation: pulse-dot 2s ease-in-out infinite; }
   .social-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
-  .social-link { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 0 18px; border-radius: 999px; background: #fff; border: 1px solid var(--border2); color: var(--text); text-decoration: none; font-size: .9rem; font-weight: 700; transition: border-color .2s, color .2s, transform .2s; }
+  .social-link { display: inline-flex; align-items: center; gap: 10px; justify-content: center; min-height: 46px; padding: 0 18px; border-radius: 999px; background: #fff; border: 1px solid var(--border2); color: var(--text); text-decoration: none; font-size: .9rem; font-weight: 700; transition: border-color .2s, color .2s, transform .2s; }
+  .social-link svg { flex-shrink: 0; }
+  [data-theme="dark"] .social-link { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.1); }
   .social-link:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
 
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -39,18 +42,23 @@ const css = `
     outline: none;
     transition: border-color .2s, box-shadow .2s;
   }
+  [data-theme="dark"] .form-input, [data-theme="dark"] .form-textarea, [data-theme="dark"] .form-select { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.1); }
   .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(37,99,235,.08); }
   .form-input::placeholder, .form-textarea::placeholder { color: var(--text3); }
   .form-textarea { resize: vertical; min-height: 160px; }
-  .submit-btn { width: 100%; min-height: 52px; border: none; border-radius: 999px; background: var(--text); color: #fff; font-size: .95rem; font-weight: 700; transition: transform .2s, background .2s; }
-  .submit-btn:hover:not(:disabled) { background: var(--accent); transform: translateY(-2px); }
+  .submit-btn { width: 100%; min-height: 52px; border: none; border-radius: 999px; background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); color: #fff; font-size: .95rem; font-weight: 700; transition: transform .2s, box-shadow .2s, opacity .2s; box-shadow: 0 16px 40px rgba(37,99,235,.28); }
+  .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 20px 44px rgba(37,99,235,.34); }
+  [data-theme="dark"] .submit-btn { box-shadow: 0 16px 40px rgba(96,165,250,.2); }
+  [data-theme="dark"] .submit-btn:hover:not(:disabled) { box-shadow: 0 20px 44px rgba(96,165,250,.28); }
   .submit-btn:disabled { opacity: .75; }
   .fine-print { margin-top: 16px; font-size: .86rem; color: var(--text3); line-height: 1.7; }
   .form-error { margin-top: 4px; padding: 12px 14px; border-radius: 14px; background: rgba(220,38,38,.08); color: #b91c1c; font-size: .9rem; line-height: 1.6; }
   .toast { position: fixed; right: 24px; bottom: 24px; z-index: 9000; padding: 14px 18px; border-radius: 16px; background: #0f172a; color: #fff; box-shadow: var(--shadow-md); transform: translateY(16px); opacity: 0; transition: transform .3s, opacity .3s; pointer-events: none; }
   .toast.show { transform: translateY(0); opacity: 1; }
+  [data-theme="dark"] .toast { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(12px); }
   .meta-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 28px; }
   .meta-card { padding: 20px; border-radius: 20px; background: rgba(255,255,255,.82); border: 1px solid rgba(199,210,224,.9); box-shadow: var(--shadow-sm); text-align: center; }
+  [data-theme="dark"] .meta-card { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.08); }
   .meta-label { font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text3); }
   .meta-value { margin-top: 10px; font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; letter-spacing: -.04em; color: var(--text); }
 
@@ -104,7 +112,7 @@ const socials = [
 ]
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', subject: '', budget: '', message: '' })
+  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
   const [sending, setSending] = useState(false)
   const [sent, setSent] = useState(false)
   const [toast, setToast] = useState(false)
@@ -135,7 +143,7 @@ export default function Contact() {
 
       setSent(true)
       setToast(true)
-      setForm({ name: '', email: '', subject: '', budget: '', message: '' })
+      setForm({ name: '', email: '', subject: '', message: '' })
       setTimeout(() => {
         setToast(false)
         setSent(false)
@@ -230,15 +238,6 @@ export default function Contact() {
               <div>
                 <label className="form-label" htmlFor="subject">Subject</label>
                 <input className="form-input" type="text" id="subject" name="subject" value={form.subject} onChange={onChange} placeholder="Project inquiry / collaboration" />
-              </div>
-              <div>
-                <label className="form-label" htmlFor="budget">Budget Range</label>
-                <select className="form-select" id="budget" name="budget" value={form.budget} onChange={onChange} style={{ color: form.budget ? 'var(--text)' : 'var(--text3)' }}>
-                  <option value="" disabled>Select budget range</option>
-                  {["< $500", "$500 – $1,000", "$1,000 – $3,000", "$3,000+", "Let's discuss"].map(value => (
-                    <option key={value} value={value}>{value}</option>
-                  ))}
-                </select>
               </div>
               <div>
                 <label className="form-label" htmlFor="message">Message</label>
