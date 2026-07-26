@@ -424,7 +424,7 @@ const css = `
     .work-type { width: fit-content; }
   }
   @media (max-width: 640px) {
-    .home-container { padding: 0 28px; max-width: 100%; }
+    .home-container { padding: 0 18px; max-width: 100%; }
     .home-section { padding: 60px 0; }
     .hero { min-height: auto; padding: 100px 0 40px; }
     .hero-grid { gap: 24px; }
