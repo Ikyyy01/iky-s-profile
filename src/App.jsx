@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Cursor from './components/Cursor'
+import ScrollToTopButton from './components/ScrollToTopButton'
 import Home from './pages/Home'
 import About from './pages/About'
 import Portfolio from './pages/Portfolio'
 import Contact from './pages/Contact'
+import NotFound from './pages/NotFound'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -27,27 +29,21 @@ const PageWrapper = ({ children }) => (
 )
 
 export default function App() {
-  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light')
   const location = useLocation()
-
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme
-    localStorage.setItem('theme', theme)
-  }, [theme])
 
   return (
     <>
       <ScrollToTop />
       <Cursor />
-      <Navbar theme={theme} onToggleTheme={() => setTheme(current => current === 'dark' ? 'light' : 'dark')} />
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
+      <Navbar />
+      <Routes location={location} key={location.pathname}>
           <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
           <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
           <Route path="/portfolio" element={<PageWrapper><Portfolio /></PageWrapper>} />
           <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
+          <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
         </Routes>
-      </AnimatePresence>
+      <ScrollToTopButton />
       <Footer />
     </>
   )

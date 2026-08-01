@@ -2,121 +2,43 @@ import { useState } from 'react'
 import { useReveal } from '../hooks/useReveal'
 
 const css = `
-  .contact-page { color: var(--text); }
-  .contact-container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-  .contact-section { padding: 110px 0; }
-  .contact-hero { padding-top: 160px; }
-  .section-label { display: inline-flex; align-items: center; gap: 10px; font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
-  .section-label::before { content: ''; width: 28px; height: 1px; background: currentColor; }
-  .display-h { font-family: var(--font-display); font-weight: 800; line-height: .98; letter-spacing: -.05em; color: var(--text); }
-  .body-copy { font-size: 1rem; line-height: 1.85; color: var(--text2); }
-  .contact-grid { display: grid; grid-template-columns: .92fr 1.08fr; gap: 28px; }
-  .panel { background: rgba(255,255,255,.82); border: 1px solid rgba(199,210,224,.9); border-radius: 30px; box-shadow: var(--shadow-sm); padding: 30px; }
-  [data-theme="dark"] .panel { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.08); }
-  .contact-list { display: grid; gap: 14px; margin-top: 30px; }
-  .contact-item { display: flex; gap: 16px; align-items: flex-start; padding: 18px 0; border-bottom: 1px solid var(--border); }
-  .contact-item:last-child { border-bottom: none; padding-bottom: 0; }
-  .contact-icon { width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; background: var(--bg3); color: var(--accent); font-size: 1.1rem; flex-shrink: 0; }
-  .contact-label { font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text3); }
-  .contact-value { margin-top: 8px; font-size: .98rem; color: var(--text); text-decoration: none; line-height: 1.7; }
-  .contact-value:hover { color: var(--accent); }
-  .status-box { margin-top: 24px; padding: 22px; border-radius: 22px; background: var(--bg3); }
-  .status-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: rgba(22,163,74,.1); color: var(--green); font-size: .8rem; font-weight: 700; }
-  .status-dot { width: 8px; height: 8px; border-radius: 999px; background: var(--green); animation: pulse-dot 2s ease-in-out infinite; }
-  .social-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
-  .social-link { display: inline-flex; align-items: center; gap: 10px; justify-content: center; min-height: 46px; padding: 0 18px; border-radius: 999px; background: #fff; border: 1px solid var(--border2); color: var(--text); text-decoration: none; font-size: .9rem; font-weight: 700; transition: border-color .2s, color .2s, transform .2s; }
-  .social-link svg { flex-shrink: 0; }
-  [data-theme="dark"] .social-link { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.1); }
-  .social-link:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
-
+  .contact-grid, .meta-grid { display: grid; gap: 32px; }
+  .contact-grid { grid-template-columns: .9fr 1.1fr; }
+  .meta-grid { grid-template-columns: repeat(3, 1fr); margin-top: 30px; gap: 20px; }
+  .info-card, .form-card, .meta-card { padding: 28px; }
+  .info-card { --rotation: -2deg; }
+  .form-card { --rotation: 2deg; }
+  .meta-card:nth-child(1) { --rotation: 3deg; }
+  .meta-card:nth-child(2) { --rotation: -1deg; }
+  .meta-card:nth-child(3) { --rotation: 2deg; }
+  .contact-list, .social-row { display: grid; gap: 14px; margin-top: 20px; }
+  .social-row { display: flex; flex-wrap: wrap; }
+  .contact-item { padding: 18px; border: var(--border-width-lg) solid var(--color-ink); border-radius: var(--radius-md); background: var(--color-muted); box-shadow: var(--shadow-sm); }
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .form-label { display: block; margin-bottom: 8px; font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text3); }
-  .form-input, .form-textarea, .form-select {
-    width: 100%;
-    border: 1px solid var(--border2);
-    border-radius: 16px;
-    background: #fff;
-    padding: 15px 16px;
-    color: var(--text);
-    font-size: .95rem;
-    outline: none;
-    transition: border-color .2s, box-shadow .2s;
-  }
-  [data-theme="dark"] .form-input, [data-theme="dark"] .form-textarea, [data-theme="dark"] .form-select { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.1); }
-  .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(37,99,235,.08); }
-  .form-input::placeholder, .form-textarea::placeholder { color: var(--text3); }
-  .form-textarea { resize: vertical; min-height: 160px; }
-  .submit-btn { width: 100%; min-height: 52px; border: none; border-radius: 999px; background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); color: #fff; font-size: .95rem; font-weight: 700; transition: transform .2s, box-shadow .2s, opacity .2s; box-shadow: 0 16px 40px rgba(37,99,235,.28); }
-  .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 20px 44px rgba(37,99,235,.34); }
-  [data-theme="dark"] .submit-btn { box-shadow: 0 16px 40px rgba(96,165,250,.2); }
-  [data-theme="dark"] .submit-btn:hover:not(:disabled) { box-shadow: 0 20px 44px rgba(96,165,250,.28); }
-  .submit-btn:disabled { opacity: .75; }
-  .fine-print { margin-top: 16px; font-size: .86rem; color: var(--text3); line-height: 1.7; }
-  .form-error { margin-top: 4px; padding: 12px 14px; border-radius: 14px; background: rgba(220,38,38,.08); color: #b91c1c; font-size: .9rem; line-height: 1.6; }
-  .toast { position: fixed; right: 24px; bottom: 24px; z-index: 9000; padding: 14px 18px; border-radius: 16px; background: #0f172a; color: #fff; box-shadow: var(--shadow-md); transform: translateY(16px); opacity: 0; transition: transform .3s, opacity .3s; pointer-events: none; }
-  .toast.show { transform: translateY(0); opacity: 1; }
-  [data-theme="dark"] .toast { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(12px); }
-  .meta-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 28px; }
-  .meta-card { padding: 20px; border-radius: 20px; background: rgba(255,255,255,.82); border: 1px solid rgba(199,210,224,.9); box-shadow: var(--shadow-sm); text-align: center; }
-  [data-theme="dark"] .meta-card { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.08); }
-  .meta-label { font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text3); }
-  .meta-value { margin-top: 10px; font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; letter-spacing: -.04em; color: var(--text); }
-
-  @media (max-width: 980px) {
-    .contact-grid, .form-grid, .meta-row { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 640px) {
-    .contact-container { padding: 0 16px; }
-    .contact-section { padding: 80px 0; }
-    .contact-hero { padding-top: 128px; }
-    .panel { padding: 22px; }
-  }
+  .form-label { display: block; margin-bottom: 10px; font-family: var(--font-mono); font-size: .85rem; font-weight: 800; text-transform: uppercase; }
+  .submit-btn { width: 100%; border: none; font-size: 1.1rem; text-transform: uppercase; }
+  .field-error { margin-top: 8px; font-size: .85rem; font-weight: 700; color: var(--color-danger); }
+  .input-error { border-color: var(--color-danger); box-shadow: 6px 6px 0 var(--color-danger); }
+  .form-error, .toast { margin-top: 12px; padding: 16px 20px; border: var(--border-width-lg) solid var(--color-ink); border-radius: var(--radius-md); box-shadow: var(--shadow-md); font-weight: 700; }
+  .form-error { background: var(--color-danger); color: #fff; }
+  .toast { position: fixed; right: 24px; bottom: 24px; background: var(--color-success); transform: rotate(-2deg); }
+  @media (max-width: 980px) { .contact-grid, .form-grid, .meta-grid { grid-template-columns: 1fr; } }
 `
 
-const icons = {
-  email: (
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M4 6h16v12H4z" />
-      <path d="m4 7 8 6 8-6" />
-    </svg>
-  ),
-  github: (
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
-      <path d="M12 .5a12 12 0 0 0-3.79 23.39c.6.1.82-.26.82-.58v-2.03c-3.34.73-4.04-1.42-4.04-1.42-.55-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.72.08-.72 1.2.09 1.84 1.24 1.84 1.24 1.08 1.83 2.83 1.3 3.52.99.11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.32-5.47-5.9 0-1.3.47-2.36 1.24-3.2-.12-.3-.54-1.52.12-3.16 0 0 1.01-.32 3.3 1.22a11.56 11.56 0 0 1 6 0c2.28-1.54 3.29-1.22 3.29-1.22.66 1.64.24 2.86.12 3.16.77.84 1.24 1.9 1.24 3.2 0 4.59-2.8 5.59-5.48 5.89.43.37.82 1.1.82 2.22v3.29c0 .32.22.69.83.58A12 12 0 0 0 12 .5Z" />
-    </svg>
-  ),
-  location: (
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M12 21s-6-4.35-6-10a6 6 0 1 1 12 0c0 5.65-6 10-6 10Z" />
-      <circle cx="12" cy="11" r="2.5" />
-    </svg>
-  ),
-  time: (
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="9" />
-      <path d="M12 7v5l3 2" />
-    </svg>
-  ),
-}
-
 const contacts = [
-  { icon: icons.email, label: 'Email', value: 'riskyjanuarlbs01@gmail.com', href: 'mailto:riskyjanuarlbs01@gmail.com' },
-  { icon: icons.github, label: 'GitHub', value: 'github.com/Ikyyy01', href: 'https://github.com/Ikyyy01' },
-  { icon: icons.location, label: 'Location', value: 'Indonesia · Remote Available', href: null },
-  { icon: icons.time, label: 'Response Time', value: 'Usually within 24 hours', href: null },
-]
-
-const socials = [
-  { label: 'GitHub', href: 'https://github.com/Ikyyy01' },
-  { label: 'Email', href: 'mailto:riskyjanuarlbs01@gmail.com' },
+  { label: 'Email', value: 'riskyjanuarlbs01@gmail.com', href: 'mailto:riskyjanuarlbs01@gmail.com' },
+  { label: 'GitHub', value: 'github.com/Ikyyy01', href: 'https://github.com/Ikyyy01' },
+  { label: 'LinkedIn', value: 'linkedin.com/in/muhammad-risky-januar-lubis-a3b554350', href: 'https://www.linkedin.com/in/muhammad-risky-januar-lubis-a3b554350/' },
+  { label: 'Location', value: 'Indonesia', href: null },
+  { label: 'Response', value: 'Usually within 24 hours', href: null },
 ]
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
   const [sending, setSending] = useState(false)
-  const [sent, setSent] = useState(false)
   const [toast, setToast] = useState(false)
   const [error, setError] = useState('')
+  const [touched, setTouched] = useState({ name: false, email: false, subject: false, message: false })
   useReveal()
 
   const onChange = event => {
@@ -124,30 +46,35 @@ export default function Contact() {
     setForm(current => ({ ...current, [event.target.name]: event.target.value }))
   }
 
+  const onBlur = event => {
+    setTouched(current => ({ ...current, [event.target.name]: true }))
+  }
+
+  const fieldErrors = {
+    name: !form.name.trim() ? 'Name is required.' : '',
+    email: !form.email.trim() ? 'Email is required.' : !/^\S+@\S+\.\S+$/.test(form.email) ? 'Enter a valid email address.' : '',
+    message: !form.message.trim() ? 'Message is required.' : form.message.trim().length < 10 ? 'Message must be at least 10 characters.' : '',
+  }
+
   const onSubmit = async event => {
     event.preventDefault()
+    setTouched({ name: true, email: true, subject: true, message: true })
+    if (fieldErrors.name || fieldErrors.email || fieldErrors.message) return
     setSending(true)
     setError('')
 
     try {
       const response = await fetch('https://formspree.io/f/xdavqpaw', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify(form),
       })
 
       if (!response.ok) throw new Error('Failed to send message')
 
-      setSent(true)
       setToast(true)
       setForm({ name: '', email: '', subject: '', message: '' })
-      setTimeout(() => {
-        setToast(false)
-        setSent(false)
-      }, 4000)
+      setTimeout(() => setToast(false), 4000)
     } catch {
       setError('Failed to send message. Please try again or contact me by email.')
     } finally {
@@ -156,118 +83,81 @@ export default function Contact() {
   }
 
   return (
-    <div className="contact-page">
+    <div>
       <style>{css}</style>
 
-      <section className="contact-section contact-hero">
-        <div className="contact-container">
-          <div className="section-label reveal">Contact</div>
-          <h1 className="display-h reveal delay-1" style={{ fontSize: 'clamp(3rem, 7vw, 5.6rem)', marginTop: 18 }}>
-            Let's talk about
-            <br />
-            your next project.
-          </h1>
-          <p className="body-copy reveal delay-2" style={{ marginTop: 22, maxWidth: 700 }}>
-            Whether you have a product idea, a collaboration opportunity, or a role to discuss, I'm open to meaningful conversations.
-          </p>
+      <section className="page-section page-hero">
+        <div className="page-shell">
+          <div className="eyebrow reveal">Contact</div>
+          <h1 className="display-title reveal delay-1" style={{ marginTop: 20 }}>Let&apos;s talk about your next project.</h1>
+          <p className="body-text muted reveal delay-2" style={{ marginTop: 20 }}>The form and contact blocks are chunky, bordered, and clear to match the visual system.</p>
         </div>
       </section>
 
-      <section className="contact-section" style={{ paddingTop: 0 }}>
-        <div className="contact-container contact-grid">
-          <div className="panel reveal">
-            <div className="section-label">Reach out</div>
+      <section className="page-section">
+        <div className="page-shell contact-grid">
+          <div className="brutal-card info-card reveal">
+            <div className="eyebrow" style={{ background: 'var(--color-secondary)' }}>Reach Out</div>
             <div className="contact-list">
-              {contacts.map(contact => (
-                <div key={contact.label} className="contact-item">
-                  <div className="contact-icon">{contact.icon}</div>
-                  <div>
-                    <div className="contact-label">{contact.label}</div>
-                    {contact.href ? (
-                      <a
-                        href={contact.href}
-                        className="contact-value"
-                        target={contact.href.startsWith('http') ? '_blank' : undefined}
-                        rel={contact.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                      >
-                        {contact.value}
-                      </a>
-                    ) : (
-                      <span className="contact-value">{contact.value}</span>
-                    )}
+              {contacts.map(item => (
+                <div key={item.label} className="contact-item">
+                  <div className="tag blue">{item.label}</div>
+                  <div style={{ marginTop: 10 }}>
+                    {item.href ? <a href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}>{item.value}</a> : <span>{item.value}</span>}
                   </div>
                 </div>
               ))}
             </div>
-
-            <div className="status-box reveal delay-2">
-              <div className="status-badge"><span className="status-dot" />Open to work</div>
-              <p className="body-copy" style={{ marginTop: 14 }}>
-                Currently available for freelance collaborations and full-time opportunities.
-              </p>
-            </div>
-
-            <div className="social-row reveal delay-3">
-              {socials.map(social => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target={social.href.startsWith('http') ? '_blank' : undefined}
-                  rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  className="social-link"
-                >
-                  {social.label}
-                </a>
-              ))}
+            <div className="social-row">
+              <a href="https://github.com/Ikyyy01" target="_blank" rel="noopener noreferrer" className="brutal-btn-outline">GitHub</a>
+              <a href="https://www.linkedin.com/in/muhammad-risky-januar-lubis-a3b554350/" target="_blank" rel="noopener noreferrer" className="brutal-btn-outline">LinkedIn</a>
+              <a href="mailto:riskyjanuarlbs01@gmail.com" className="brutal-btn">Email</a>
             </div>
           </div>
 
-          <div className="panel reveal delay-1">
-            <div className="section-label">Send a message</div>
-            <form style={{ display: 'flex', flexDirection: 'column', gap: 18, marginTop: 26 }} onSubmit={onSubmit}>
+          <div className="brutal-card form-card reveal delay-1">
+            <div className="eyebrow">Send a Message</div>
+            <form onSubmit={onSubmit} style={{ display: 'grid', gap: 18, marginTop: 24 }}>
               <div className="form-grid">
                 <div>
                   <label className="form-label" htmlFor="name">Name</label>
-                  <input className="form-input" type="text" id="name" name="name" value={form.name} onChange={onChange} placeholder="Your name" required />
+                  <input className={`brutal-input${touched.name && fieldErrors.name ? ' input-error' : ''}`} type="text" id="name" name="name" value={form.name} onChange={onChange} onBlur={onBlur} required />
+                  {touched.name && fieldErrors.name ? <div className="field-error">{fieldErrors.name}</div> : null}
                 </div>
                 <div>
                   <label className="form-label" htmlFor="email">Email</label>
-                  <input className="form-input" type="email" id="email" name="email" value={form.email} onChange={onChange} placeholder="your@email.com" required />
+                  <input className={`brutal-input${touched.email && fieldErrors.email ? ' input-error' : ''}`} type="email" id="email" name="email" value={form.email} onChange={onChange} onBlur={onBlur} required />
+                  {touched.email && fieldErrors.email ? <div className="field-error">{fieldErrors.email}</div> : null}
                 </div>
               </div>
               <div>
                 <label className="form-label" htmlFor="subject">Subject</label>
-                <input className="form-input" type="text" id="subject" name="subject" value={form.subject} onChange={onChange} placeholder="Project inquiry / collaboration" />
+                <input className="brutal-input" type="text" id="subject" name="subject" value={form.subject} onChange={onChange} />
               </div>
               <div>
                 <label className="form-label" htmlFor="message">Message</label>
-                <textarea className="form-textarea" id="message" name="message" value={form.message} onChange={onChange} placeholder="Tell me about your project, goals, and timeline..." required />
+                <textarea className={`brutal-textarea${touched.message && fieldErrors.message ? ' input-error' : ''}`} id="message" name="message" value={form.message} onChange={onChange} onBlur={onBlur} required />
+                {touched.message && fieldErrors.message ? <div className="field-error">{fieldErrors.message}</div> : null}
               </div>
-              <button type="submit" className="submit-btn" disabled={sending}>
-                {sending ? 'Sending...' : sent ? 'Message Sent' : 'Send Message'}
-              </button>
+              <button type="submit" className="brutal-btn submit-btn" disabled={sending}>{sending ? 'Sending...' : 'Send Message'}</button>
               {error ? <div className="form-error">{error}</div> : null}
             </form>
-            <p className="fine-print">Your message stays private and is intended only for direct communication.</p>
           </div>
         </div>
       </section>
 
-      <section className="contact-section" style={{ paddingTop: 0 }}>
-        <div className="contact-container">
-          <div className="section-label reveal">Availability</div>
-          <div className="meta-row reveal delay-1">
-            {[['Timezone', 'WIB (UTC+7)'], ['Languages', 'ID · EN'], ['Status', 'Available']].map(([label, value]) => (
-              <div key={label} className="meta-card">
-                <div className="meta-label">{label}</div>
-                <div className="meta-value" style={label === 'Status' ? { color: 'var(--green)' } : {}}>{value}</div>
-              </div>
-            ))}
-          </div>
+      <section className="page-section">
+        <div className="page-shell meta-grid reveal">
+          {['WIB (UTC+7)', 'ID · EN', 'Open for Projects'].map((value, index) => (
+            <div key={value} className="brutal-card meta-card" style={{ background: index === 0 ? 'var(--color-primary)' : index === 1 ? 'var(--color-secondary)' : 'var(--color-surface)' }}>
+              <div className="tag blue">{index === 0 ? 'Timezone' : index === 1 ? 'Languages' : 'Status'}</div>
+              <div className="section-title" style={{ marginTop: 16, fontSize: '1.5rem' }}>{value}</div>
+            </div>
+          ))}
         </div>
       </section>
 
-      <div className={`toast${toast ? ' show' : ''}`}>Message sent. I'll get back to you soon.</div>
+      {toast ? <div className="toast">Message sent. I'll get back to you soon.</div> : null}
     </div>
   )
 }
