@@ -9,44 +9,6 @@ Portfolio website Risky Januar (Iky) dibangun ulang menggunakan **React + Vite +
 - **React Router v7** — Client-side routing
 - **CSS Variables** — Design tokens & theming
 
-## Cara Jalankan
-
-### 1. Install dependencies
-
-```bash
-npm install
-```
-
-### 2. Copy foto ke public/photo/
-
-Salin semua foto dari folder `photo/` lama ke `public/photo/`:
-
-```
-public/
-└── photo/
-    ├── IMG_5199.jpg
-    ├── Screenshot_20260323_191003_WhatsApp.jpg
-    └── Gemini_Generated_Image_9pq8wq9pq8wq9pq8.png
-```
-
-### 3. Jalankan development server
-
-```bash
-npm run dev
-```
-
-Buka [http://localhost:5173](http://localhost:5173)
-
-### 4. Build untuk production
-
-```bash
-npm run build
-```
-
-Output ada di folder `dist/`
-
----
-
 ## Struktur Project
 
 ```
